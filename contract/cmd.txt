@@ -5,12 +5,11 @@ eosiocpp -g babel.abi babel.cpp
 // wallet
 cleos wallet unlock -n todo --password PW5KWyHPJC5h8wuToYoBUbK1SVm9UP9NqXqohT7TbLwB5xmDMupxJ
 
-
 // create account 
 cleos create account eosio babel.user EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 
-
-
+// set contract
+cleos set contract babel.user ./babel -p babel.user
 
 
 // @abi action
