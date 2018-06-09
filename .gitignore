@@ -15,7 +15,6 @@ yarn-error.log*
 *.sln
 
 .idea
-test*
 *.wast
 *.wasm
 
