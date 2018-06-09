@@ -36,6 +36,14 @@ cleos push action babel.user booking '["babel.joe","babel.user", "100.0000 DJB",
 cleos push action babel.user add '[ "babel.user", "111.0000 DJB" ]' -p babel.user
 cleos push action babel.user sub '[ "babel.user1", "11.0000 DJB" ]' -p babel.user
 
+
+//add_video
+cleos push action babel.user post '["babel.joe", 1, "视频1","很搞笑的视频","QmQFK1UCeAmhAfKgEyJaVq6P5VhyeyvVuH4cGqFkcGoNL8"]' -p babel.joe
+cleos push action babel.user post '["babel.joe", 2, "视频2","很性感的视频","QmVMGwzktVsoNLRuKi7V1i6KZx5aqgyrczmKLy2hQd7uaZ"]' -p babel.joe
+
+
 //get tables
 cleos get table babel.user babel.user user
+cleos get table babel.user babel.joe user
 cleos get table babel.user babel.user video
+cleos get table babel.user babel.joe video
