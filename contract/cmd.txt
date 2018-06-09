@@ -29,7 +29,7 @@ cleos push action babel.user signup '["babel.sky",1, "sky","sky.png"]' -p babel.
 
 
 // booking
-cleos push action babel.user booking '["babel.joe","babel.user", "100.0000 DJB","xxx"]' -p babel.joe
+cleos push action babel.user booking '["babel.joe","babel.user", "1.0000 DJB","xxx"]' -p babel.joe
 
 
 //充值
