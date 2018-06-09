@@ -1,5 +1,3 @@
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/asset.hpp>
 #include <eosiolib/currency.hpp>
 #include <math.h>
 #include <eosiolib/dispatcher.hpp>
@@ -66,10 +64,12 @@ class babel : public eosio::contract
     void like(account_name author, const uint32_t id, const uint64_t status)
     {
         video_index videos(_self, author);
-        auto itr = videos.find(id);
+        auto v_itr = videos.find(id);
 
-        // user_index users(_self, author);
-        // eosio_assert(itr != users.end(), "unknown account");
+        user_index users(_self, author);
+        auto u_itr = users.find(author);
+
+        eosio_assert(u_itr != users.end(), "unknown account");
 
         // video vote + 1
 
@@ -79,6 +79,67 @@ class babel : public eosio::contract
 
         eosio::print("like#", author, status, " created");
     }
+
+    // @abi action
+    void booking(account_name bar, account_name user, const asset &quantity, account_name inviter)
+    {
+        // inviter： 邀请人，如果传入有效邀请人，智能合约会执行推广返佣的代码。所以前端要判断好，是否是邀请人。 ： 那当前定的酒吧和记录的推广人id、酒吧id比较
+
+        user_index users_bar(_self, bar);
+        auto bar_itr = users_bar.find(bar);
+        eosio_assert(bar_itr != users_bar.end(), "unknown bar");
+
+        user_index users(_self, user);
+        auto users_itr = users.find(user);
+        eosio_assert(users_itr != users.end(), "unknown user");
+
+        eosio_assert(quantity.amount > 0, "must give positive quantity");
+
+        user_index users_inviter(_self, inviter);
+        auto inviter_itr = users_inviter.find(inviter);
+        if (inviter_itr != users_inviter.end())
+        {
+            // 消费 100% 
+            users.modify(users_itr, 0, [&](auto &acnt) {
+                eosio_assert(acnt.balance >= quantity, "insufficient balance");
+                acnt.balance -= quantity ;
+            });
+
+             // 酒吧 80%
+            users_bar.modify(bar_itr, 0, [&](auto &acnt) {
+                acnt.balance += quantity * 0.8;
+            });
+
+            // 佣金 20% 
+            users_inviter.modify(inviter_itr, 0, [&](auto &acnt) {
+                acnt.balance += quantity * 0.2;
+            });
+        }
+        else
+        {
+             // 消费 100% 
+            users.modify(users_itr, 0, [&](auto &acnt) {
+                eosio_assert(acnt.balance >= quantity, "insufficient balance");
+                acnt.balance -= quantity ;
+            });
+
+             // 酒吧 100%
+            users_bar.modify(bar_itr, 0, [&](auto &acnt) {
+                acnt.balance += quantity ;
+            });
+
+        }
+    }
+
+    // 1. 用户买票消费100 DJB ， 票（id，状态，酒吧id，owner）
+
+    // 2. 酒吧可以看到卖出的票，并且可以把其中某个票 的状态标记已经使用
+
+    // 3. 用户每天可以点赞10次，点赞获得10 DJB
+
+    // 分享按钮 生成视频分析链接 链接中带入 推广人id、酒吧id
+
+    // 另一个用户 点击视频分享 获取 推广人id、酒吧id。
 
     // @abi action
     void add(const account_name to, const asset &quantity)
@@ -164,4 +225,4 @@ class babel : public eosio::contract
     typedef eosio::multi_index<N(video), video> video_index;
 };
 
-EOSIO_ABI(babel, (hi)(signup)(post)(like)(add)(sub))
+EOSIO_ABI(babel, (hi)(signup)(post)(like)(add)(sub)(booking))
