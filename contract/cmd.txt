@@ -1,0 +1,30 @@
+// 编译智能合约
+eosiocpp -o babel.wast babel.cpp
+eosiocpp -g babel.abi babel.cpp
+
+// wallet
+cleos wallet unlock -n todo --password PW5KWyHPJC5h8wuToYoBUbK1SVm9UP9NqXqohT7TbLwB5xmDMupxJ
+
+
+// create account 
+cleos create account eosio babel.user EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+
+
+
+
+
+// @abi action
+void booking(account_name bar, account_name user)
+{
+
+}
+
+// 1. 用户买票消费100 DJB ， 票（id，状态，酒吧id，owner）
+
+// 2. 酒吧可以看到卖出的票，并且可以把其中某个票 的状态标记已经使用
+
+// 3. 用户每天可以点赞10次，点赞获得10 DJB
+
+// 分享按钮 生成视频分析链接 链接中带入 推广人id、酒吧id
+
+// 另一个用户 点击视频分享 获取 推广人id、酒吧id。
