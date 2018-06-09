@@ -7,24 +7,35 @@ cleos wallet unlock -n todo --password PW5KWyHPJC5h8wuToYoBUbK1SVm9UP9NqXqohT7Tb
 
 // create account 
 cleos create account eosio babel.user EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.user2 EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.user3 EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+
+
 cleos create account eosio babel.sky EOS6KQgS51Mx5VWDfZNZqPaLKt7gTfEa1fBm87GQWUuFzp2HR6Kax EOS6KQgS51Mx5VWDfZNZqPaLKt7gTfEa1fBm87GQWUuFzp2HR6Kax
+cleos create account eosio babel.joe EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+
 
 // set contract
 cleos set contract babel.user ./babel -p babel.user
 
 
-// @abi action
-void booking(account_name bar, account_name user)
-{
+// signup
+cleos push action babel.user signup '["babel.user",3, "jc1991","jc1991.png"]' -p babel.user
+cleos push action babel.user signup '["babel.user2",3, "jc1991","jc1991.png"]' -p babel.user2
+cleos push action babel.user signup '["babel.user3",3, "jc1991","jc1991.png"]' -p babel.user3
+cleos push action babel.user signup '["babel.joe",2, "joe","joe.png"]' -p babel.joe
 
-}
+cleos push action babel.user signup '["babel.sky",1, "sky","sky.png"]' -p babel.sky
 
-// 1. 用户买票消费100 DJB ， 票（id，状态，酒吧id，owner）
 
-// 2. 酒吧可以看到卖出的票，并且可以把其中某个票 的状态标记已经使用
+// booking
+cleos push action babel.user booking '["babel.joe","babel.user", "100.0000 DJB","xxx"]' -p babel.joe
 
-// 3. 用户每天可以点赞10次，点赞获得10 DJB
 
-// 分享按钮 生成视频分析链接 链接中带入 推广人id、酒吧id
+//充值
+cleos push action babel.user add '[ "babel.user", "111.0000 DJB" ]' -p babel.user
+cleos push action babel.user sub '[ "babel.user1", "11.0000 DJB" ]' -p babel.user
 
-// 另一个用户 点击视频分享 获取 推广人id、酒吧id。
+//get tables
+cleos get table babel.user babel.user user
+cleos get table babel.user babel.user video
