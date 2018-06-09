@@ -62,7 +62,7 @@
 								<span class="item-txt">我的</span>
 							</a>
 						</router-link>
-						<a href="#" class="item share">
+						<a href="#" class="item share" @click="openInviteLink()">
 							<span class="item-span"><img src="../assets/images/foot-img-share.png" alt=""></span>
 							<span class="item-txt">{{video.current.share}}</span>
 						</a>
@@ -164,6 +164,7 @@ import videojs from "video.js"
 import three from "three"
 import videojsPanorama from "videojs-panorama"
 import EOS from 'eosjs'
+import qs from 'qs'
 var eos;
 
 const EOS_CONFIG = {
@@ -213,6 +214,19 @@ export default {
   },
   
   created (){
+
+	//获取推广id ?invite=id
+	var inviteid = qs.parse(location.search.slice(1)).invite;
+	console.log(inviteid)
+    if (inviteid) {
+     this.invite = inviteid;
+     localStorage.setItem("INVITE" + this.version, inviteid);
+    } else {
+     inviteid = localStorage.getItem("INVITE" + this.version);
+     if (inviteid) {
+      this.invite = inviteid;
+     }
+    }
   	
   	const network = {
 		blockchain: 'eos',
@@ -451,7 +465,14 @@ export default {
 			    })
 			})
   		}
-  	},
+	  },
+	  
+	openInviteLink: function() {
+    var _this = this;
+    _this.inviteLink = location.origin + "?invite=" + this.video.current.userId;
+
+    alert(_this.inviteLink+ '    请复制您的邀请链接');
+   },
 
   	// 弹出评论窗口
   	toggleShowComment: function(){
