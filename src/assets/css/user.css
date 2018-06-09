@@ -1,0 +1,302 @@
+/* 个人主页 */
+
+/* 背景 */
+.user-mask {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 7.5rem;
+  z-index: -1;
+}
+.user-mask:before {  
+  background: url(../img/user-bg.jpg) center no-repeat;  
+  background-size: cover;  
+  width: 100%;  
+  height: 100%;  
+  content: "";  
+  position: absolute;  
+  top: 0;  
+  left: 0;  
+  z-index: -2;
+  -webkit-filter: blur(20px);  
+  -moz-filter: blur(20px);   
+  filter: blur(20px);
+  opacity: 0.5;
+}
+/* end 背景 */
+
+/* 用户信息 */
+.user-info {
+  margin: 0 0.3rem 0.3rem;
+  height: 2.3rem;
+  position: relative;
+  padding-top: 0.3rem;
+}
+.user-info .user-img {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  font-size: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+}
+.user-info .user-img img {
+  width: 1.94rem;
+  height: 1.94rem;
+  border-radius: 50%;
+  margin: 0.03rem
+}
+.user-info .user-follow {
+  position: absolute;
+  right: 0;
+  top: 25%;
+}
+.user-info .user-follow .item {
+  display: block;
+  float: right;
+  background: rgba(0,0,0,0.2);
+  border-radius: 5%;
+  margin-left: 0.15rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0;
+  height: 0.8rem;
+  text-align: center;
+}
+.user-info .user-follow .item img {
+  width: 0.4rem;
+  height: 0.4rem;
+}
+.user-info .user-follow .item.flo {
+  background: #ff2c55;
+  font-size: 0.28rem;
+}
+.user-name {
+  padding-bottom: 0.3rem;
+  margin: 0 0.3rem;
+  color: #fff;
+  position: relative;
+}
+.user-name:after {
+  content: " ";
+  position: absolute;
+  bottom: -0.02rem;
+  left: 0;
+  height: 0.02rem;
+  width: 100%;
+  background: #fff;
+  opacity: 0.2;
+}
+.user-name .name-msg {
+  margin-right: 1.8rem;
+}
+.user-name .name-msg .name {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 0.48rem;
+  height: 0.8rem;
+}
+.user-name .name-msg .u-id {
+  font-size: 0.26rem;
+  display: block;
+  height: 0.3rem;
+  line-height: 0.3rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.user-name .wb-index {
+  position: absolute;
+  right: 0;
+  bottom: 0.3rem;
+  font-size: 0.26rem;
+  height: 0.3rem;
+}
+.user-name .wb-index .log {
+  display: inline-block;
+  vertical-align: top;
+  width: 0.3rem;
+  height: 0.3rem;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 0;
+}
+.user-name .wb-index .log img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.user-name .wb-index .txt {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 0.3rem;
+}
+.user-name .wb-index .arr {
+  display: inline-block;
+  vertical-align: top;
+  font-family: simsun;
+  font-weight: 600;
+  line-height: 0.35rem;
+}
+/* end 用户信息 */
+
+/* 认证信息 */
+.user-aut {
+  margin: 0.3rem;
+  color: #fff;
+  position: relative;
+}
+.user-aut .aut-info {
+  margin-right: 1.6rem;
+  font-size: 0.26rem;
+  line-height: 0.3rem;
+}
+.user-aut .aut-info .aut-log img {
+  width: 0.3rem;
+  height: 0.3rem;
+  vertical-align: top;
+  margin-right: 0.1rem;
+}
+.user-aut .aut-info .wb-name ,
+.user-aut .aut-info .wb-dse {
+  color: #ccc;
+  margin-top: 0.1rem;
+}
+.user-aut .aut-info .person-tag .tag01 ,
+.user-aut .aut-info .person-tag .tag02 {
+  margin-top: 0.2rem;
+  display: inline-block;
+  line-height: 0.4rem;
+  font-size: 0.24rem;
+  padding: 0 0.2rem;
+  border-radius: 0.4rem;
+  margin-right: 0.15rem;
+}
+.user-aut .aut-info .person-tag .tag01 {
+  background: #6c69e5;
+}
+.user-aut .aut-info .person-tag .tag02 {
+  background: #de3f8e;
+}
+.user-aut .aut-wallet {
+  position: absolute;
+  right: 0;
+  top: 10%;
+  display: block;
+  text-align: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  font-size: 0;
+}
+.user-aut .aut-wallet img {
+  width: 100%;
+  height: 100%;
+}
+/* end 认证信息 */
+
+/* 粉丝 */
+.user-fan {
+  margin: 0.3rem 0.3rem 0.5rem;
+}
+.user-fan .item {
+  float: left;
+  display: block;
+  padding-right: 0.3rem;
+  text-align: left;
+  font-size: 0.26rem;
+}
+.user-fan .item .num {
+  font-size: 0.36rem;
+  font-family: arial;
+  margin-right: 0.05rem;
+}
+/* end 粉丝 */
+
+/* 列表 */
+.user-list {
+  position: relative;
+  color: #fff;
+  background: #161823;
+}
+.user-list .lis-tab {
+  line-height: 0.8rem;
+  font-size: 0.32rem;
+}
+.user-list .lis-tab .item {
+  float: left;
+  width: 50%;
+  text-align: center;
+  color: #999;
+}
+.user-list .lis-tab .item .num {
+  font-family: arial;
+  margin-left: 0.05rem;
+  color: #999;
+}
+.user-list .lis-tab .item.current {
+  background: #face15;
+  color: #fff;
+}
+.user-list .lis-tab .item.current .num {
+  color: #fff;
+}
+.user-list .list-con {
+  position: relative;
+  padding-left: 0.02rem;
+}
+.user-list .list-con .list-item {
+  float: left;
+  display: block;
+  width: 33.33%;
+  box-sizing: border-box;
+  padding: 0 0.02rem 0.02rem 0;
+  position: relative;
+}
+.user-list .list-con .list-item .lis-vid {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 0;
+  position: relative;
+}
+.user-list .list-con .list-item .lis-vid:before {
+  content: " ";
+  padding-top: 100%;
+  display: block;
+  vertical-align: top;
+}
+.user-list .list-con .list-item .lis-vid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.user-list .list-con .list-item .like-num {
+  position: absolute;
+  bottom: 0.2rem;
+  left: 0.15rem;
+  padding-left: 0.4rem;
+  background: url(../images/small-like.png) no-repeat;
+  background-size: 0.3rem;
+  background-position: left center;
+  line-height: 0.3rem;
+  font-size: 0.3rem;
+  font-family: arial;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 80%;
+  font-style: italic;
+}
+.user-list .no-more {
+  padding: 0.2rem 0 0.4rem;
+  text-align: center;
+  font-size: 0.26rem;
+  color: #999;
+}
+/* end 列表 */
+
+/* end 个人主页 */

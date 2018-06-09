@@ -173,6 +173,16 @@ import three from "three"
 import videojsPanorama from "videojs-panorama"
 import eosjs from "eosjs"
 
+var EOS_CONFIG = {
+	contractName: "todo.user", // Contract name
+	contractSender: "todo.user", // User executing the contract (should be paired with private key)
+	clientConfig: {
+		keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // Your private key
+		// httpEndpoint: 'http://127.0.0.1:8888', // EOS http endpoint
+		httpEndpoint: 'http://47.97.165.158:8888' // EOS http endpoint
+	}
+}
+
 export default {
   name: 'Index',
   data () {
@@ -208,11 +218,55 @@ export default {
   
   mounted (){
 
-	//记住vue实例, 以便在某些回调方法中使用
-  	var vue = this;
+  	var videoList = [
+  		{
+  			id : 1,
+  			src : "http://10.101.2.109:8080/ipfs/QmTJjsBPAzGdowS7AJ6yxrLvYDkEDgVm4Z8xMkWCTJzNWn",
+  			type: "video/mp4",
+  			like: true,
+  			likeCount: 100000,
+  			commentCount: 4800,
+  			shareCount: 1000,
+  			user: {
+  				userId: "",
+  				userName: "",
+  				isFollow: true,
+  			}
+  		},
+  		{
+  			id : 2,
+  			src : "http://localhost:8080/static/media/test3.d6f59a3.mp4",
+  			type: "video/mp4",
+  			like: false,
+  			likeCount: 50000,
+  			commentCount: 1800,
+  			shareCount: 500,
+  			user: {
+  				userId: "",
+  				userName: "",
+  				isFollow: false,
+  			}
+  		},
+  		{
+  			id : 3,
+  			src : "http://localhost:8080/static/media/test6.b542ec1.mp4",
+  			type: "video/mp4",
+  			like: false,
+  			likeCount: 50000,
+  			commentCount: 1800,
+  			shareCount: 500,
+  			user: {
+  				userId: "",
+  				userName: "",
+  				isFollow: false,
+  			}
+  		}
+	];
+
+	this.video.current = videoList[0];
 
 	//初始化视频
-  	vue.initVideo(vue.video.current.src, vue.video.current.type);
+  	this.initVideo(this.video.current.src, this.video.current.type);
   },
 
   methods: {

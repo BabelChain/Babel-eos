@@ -1,0 +1,192 @@
+/* 钱包 */
+header {
+  background: #000;
+}
+.wallet {
+  color: #fff;
+}
+.wallet .rank-tab {
+  height: 0.8rem;
+  line-height: 0.8rem;
+  font-size: 0.32rem;
+}
+.wallet .rank-tab .item {
+  float: left;
+  width: 50%;
+  text-align: center;
+  color: #999;
+  position: relative;
+  border-bottom: 0.02rem solid #666;
+}
+.wallet .rank-tab .item.current {
+  color: #face15;
+  border-bottom: 0.02rem solid #face15;
+}
+
+/* 余额 */
+.wallet .balance {
+  padding: 0.3rem 0.2rem;
+}
+.wallet .balance .my-bal {
+  display: -webkit-flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 0.2rem;
+  border-bottom: 0.02rem solid #cbcbcb;
+}
+.wallet .balance .my-bal .bal-num {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  flex: 1;
+  max-width: 50%;
+}
+.wallet .balance .my-bal .bal-num .img {
+  display: block;
+  text-align: center;
+  font-size: 0;
+}
+.wallet .balance .my-bal .bal-num .img img {
+  width: 1rem;
+  height: 1rem;
+}
+.wallet .balance .my-bal .bal-num .txt {
+  display: block;
+  text-align: center;
+  font-size: 0.26rem;
+  margin-top: 0.1rem;
+  height: 0.4rem;
+  line-height: 0.4rem;
+  color: #cbcbcb;
+  font-family: arial;
+  font-weight: 600;
+}
+.wallet .balance .my-bal .bal-num .txt .txt-em {
+  font-size: 0.34rem;
+  margin-left: 0.05rem;
+  color: #cbcbcb;
+}
+.wallet .balance .my-bal .recharge {
+  display: block;
+  background: #feae17;
+  color: #ff2c55;
+  font-size: 0.32rem;
+  font-weight: 600;
+  width: 2rem;
+  height: 0.8rem;
+  line-height: 0.8rem;
+  border-radius: 0.05rem;
+  text-align: center;
+  margin: 0.3rem auto 0;
+}
+.wallet .balance .bal-det .record {
+  padding: 0.3rem;
+  border-bottom: 0.02rem dashed #cbcbcb;
+  display: -webkit-flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  color: #cbcbcb;
+}
+.wallet .balance .bal-det .record .rec-det {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  flex: 1;
+  overflow: hidden;
+}
+.wallet .balance .bal-det .record .rec-det .rec-img {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0;
+  vertical-align: top;
+  float: left;
+}
+.wallet .balance .bal-det .record .rec-det .rec-img.rec {
+  background: url(../images/balance-add.png) no-repeat;
+  background-size: 0.8rem 0.8rem;
+}
+.wallet .balance .bal-det .record .rec-det .rec-img.con {
+  background: url(../images/balance-red.png) no-repeat;
+  background-size: 0.8rem 0.8rem;
+}
+.wallet .balance .bal-det .record .rec-det .rec-txt {
+  display: block;
+  margin-left: 1rem;
+  vertical-align: top;
+  margin-right: 0.2rem;
+}
+.wallet .balance .bal-det .record .rec-det .rec-txt .s-name {
+  display: block;
+  font-size: 0.24rem;
+  line-height: 0.24rem;
+}
+.wallet .balance .bal-det .record .rec-det .rec-txt .t-det {
+  display: block;
+  font-size: 0.28rem;
+  line-height: 0.3rem;
+  margin-top: 0.2rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.wallet .balance .bal-det .record .time {
+  font-size: 0.24rem;
+  line-height: 0.8rem;
+}
+/* end 余额 */
+
+/* 卡券 */
+.coupon {
+  padding-bottom: 0.3rem;
+}
+.coupon .cou-list {
+  width: 80%;
+  margin: 0.3rem auto 0;
+  background: #323232;
+  border-radius: 0.05rem;
+  padding: 0.2rem;
+  color: #cbcbcb;
+  border: 0.02rem solid #787878;
+}
+.coupon .cou-list .img {
+  width: 1rem;
+  height: 1rem;
+  font-size: 0;
+  vertical-align: top;
+  float: left;
+}
+.coupon .cou-list .img img {
+  width: 100%;
+  height: 100%;
+}
+.coupon .cou-list .txt {
+  display: block;
+  margin-left: 1.2rem;
+  vertical-align: top;
+  margin-right: 0.2rem;
+  margin-top: 0.1rem;
+}
+.coupon .cou-list .txt .place {
+  font-size: 0.24rem;
+  line-height: 0.24rem;
+}
+.coupon .cou-list .txt .con {
+  display: block;
+  font-size: 0.28rem;
+  line-height: 0.3rem;
+  margin-top: 0.2rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/* end 卡券 */
+
+/* end 钱包 */

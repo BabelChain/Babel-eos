@@ -1,0 +1,148 @@
+/* DJ榜单 */
+header {
+  background: #000;
+}
+.DJ-rank {
+  color: #fff;
+}
+.DJ-rank .rank-tab {
+  height: 0.8rem;
+  line-height: 0.8rem;
+  font-size: 0.32rem;
+}
+.DJ-rank .rank-tab .item {
+  float: left;
+  width: 50%;
+  text-align: center;
+  color: #999;
+  position: relative;
+  border-bottom: 0.02rem solid #666;
+}
+.DJ-rank .rank-tab .item.current {
+  color: #face15;
+  border-bottom: 0.02rem solid #face15;
+}
+.DJ-rank .rank-list .list-item {
+  padding: 0.3rem 0;
+  border-bottom: 0.02rem solid #666;
+  position: relative;
+}
+.DJ-rank .rank-list .list-item .rank {
+  display: inline-block;
+  vertical-align: top;
+  float: left;
+  font-size: 0.28rem;
+  font-family: arial;
+  font-weight: 600;
+  width: 1rem;
+  height: 0.5rem;
+  line-height: 0.5rem;
+  text-align: left;
+  
+  margin-top: 0.3rem;
+  box-sizing: border-box;
+  padding-left: 0.1rem;
+}
+.DJ-rank .rank-list .list-item .rank.the-first {
+  background: #face15;
+  border-radius: 0 0.4rem 0.4rem 0;
+}
+.DJ-rank .rank-list .list-item .DJ-img {
+  display: block;
+  float: left;
+  margin: 0 0.1rem;
+  width: 1.2rem;
+}
+.DJ-rank .rank-list .list-item .DJ-img .img {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  font-size: 0;
+  margin: auto;
+  position: relative;
+}
+.DJ-rank .rank-list .list-item .DJ-img .img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.DJ-rank .rank-list .list-item .DJ-img .img .first-icon {
+  position: absolute;
+  top: -0.3rem;
+  left: 25%;
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.DJ-rank .rank-list .list-item .DJ-img .img .first-icon img {
+  border-radius: 0;
+}
+.DJ-rank .rank-list .list-item .DJ-img .name {
+  display: block;
+  text-align: center;
+  margin-top: 0.1rem;
+  font-size: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.DJ-rank .rank-list .list-item .DJ-msg {
+  margin-left: 2.4rem;
+  height: 1.5rem;
+  position: relative;
+}
+.DJ-rank .rank-list .list-item .DJ-msg .des {
+  font-size: 0.24rem;
+  line-height: 0.33rem;
+  height: 1rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.DJ-rank .rank-list .list-item .DJ-msg .like-watch {
+  line-height: 0.4rem;
+  font-size: 0.24rem;
+  position: absolute;
+  bottom: 0;
+}
+.DJ-rank .rank-list .list-item .DJ-msg .like-watch .num {
+  color: #ff2c55;
+}
+.DJ-rank .rank-list .list-item .tickets {
+  position: absolute;
+  right: 0;
+  top: 0.3rem;
+  width: 1rem;
+  text-align: center;
+}
+.DJ-rank .rank-list .list-item .tickets .btn {
+  display: block;
+  background: #ff2c55;
+  font-size: 0.24rem;
+  width: 0.8rem;
+  height: 0.4rem;
+  line-height: 0.4rem;
+  border-radius: 0.05rem;
+  margin: auto;
+}
+.DJ-rank .rank-list .list-item .tickets .disbtn {
+  display: block;
+  background: #ddd;
+  font-size: 0.24rem;
+  width: 0.8rem;
+  height: 0.4rem;
+  line-height: 0.4rem;
+  border-radius: 0.05rem;
+  margin: auto;
+}
+.DJ-rank .rank-list .list-item .tickets .num {
+  display: block;
+  font-size: 0.24rem;
+  width: 0.8rem;
+  margin: 0.1rem auto 0;
+}
+.DJ-rank .rank-list.year-rank .list-item .DJ-msg {
+  margin-right: 1rem;
+}
+/* end DJ榜单 */
