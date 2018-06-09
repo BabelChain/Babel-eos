@@ -13,19 +13,13 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-=======
-.DS_Store
-node_modules/
-dist/
-npm-debug.log
+
 .idea
 test*
 *.wast
 *.wasm
 
 
+*.mp4
 
 
-
-
->>>>>>> .theirs

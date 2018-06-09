@@ -7,6 +7,7 @@ cleos wallet unlock -n todo --password PW5KWyHPJC5h8wuToYoBUbK1SVm9UP9NqXqohT7Tb
 
 // create account 
 cleos create account eosio babel.user EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.sky EOS6KQgS51Mx5VWDfZNZqPaLKt7gTfEa1fBm87GQWUuFzp2HR6Kax EOS6KQgS51Mx5VWDfZNZqPaLKt7gTfEa1fBm87GQWUuFzp2HR6Kax
 
 // set contract
 cleos set contract babel.user ./babel -p babel.user
