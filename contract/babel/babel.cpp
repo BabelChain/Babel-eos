@@ -139,7 +139,7 @@ class babel : public eosio::contract
             logs.emplace(_self, [&](auto &new_log) {
                 new_log.id = logs.available_primary_key();
                 new_log.owner = user;
-                new_log.type = -1;
+                new_log.type = 0;
                 new_log.description = "订座";
                 new_log.quantity = quantity;
             });
@@ -190,7 +190,7 @@ class babel : public eosio::contract
             logs.emplace(_self, [&](auto &new_log) {
                 new_log.id = logs.available_primary_key();
                 new_log.owner = user;
-                new_log.type = -1;
+                new_log.type = 0;
                 new_log.description = "订座";
                 new_log.quantity = quantity;
             });
