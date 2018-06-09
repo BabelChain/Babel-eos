@@ -27,8 +27,8 @@
 					<div class="info-left">
 						<div class="tag"><a href="#" class="item">标签1</a><a href="#" class="item">标签2</a></div>
 						<div class="activity"><a href="#" class="item"><router-link to="/djrank"><em class="item-em">#</em>百大Dj年度投票排行榜</router-link></a></div>
-						<a href="#" class="user-name">@用户名</a>
-						<p class="video-txt">这是一段对视频的描述文字</p>
+						<a href="#" class="user-name">@{{video.current.userName}}</a>
+						<p class="video-txt">{{video.current.description}}</p>
 					</div>
 					<div class="info-right">
 						<router-link to="/bar">
@@ -44,14 +44,14 @@
 					<div class="foot-box clear">
 						<a href="#" class="item like" @click="like()">
 							<span class="item-span">
-								<img v-if="video.current.like" src="../assets/images/foot-img-liked.png" alt="">
-								<img v-else="video.current.like" src="../assets/images/foot-img-like.png" alt="">
+								<img v-if="video.current.isUps" src="../assets/images/foot-img-liked.png" alt="">
+								<img v-else src="../assets/images/foot-img-like.png" alt="">
 						    </span>
 							<span class="item-txt">{{video.current.ups}}</span>
 						</a>
 						<a href="#" class="item comment" @click="toggleShowComment()">
 							<span class="item-span"><img src="../assets/images/foot-img-comment.png" alt=""></span>
-							<span class="item-txt">{{video.current.commentCount}}</span>
+							<span class="item-txt">{{video.current.balance.toFixed(2)}}</span>
 						</a>
 						<a href="#" class="item release">
 							<span class="item-span"><img src="../assets/images/foot-img-release.png" alt=""></span>
@@ -197,11 +197,9 @@ export default {
   			share: 0,
   			owner: "",
   			balance: 0,
-  			user: {
-  				userId: "",
-  				userName: "",
-  				isFollow: false,
-	  		}
+  			isUps: false,
+  			userId: "",
+  			userName: "" 
       	},
       	list: [],
       	user: {
@@ -252,17 +250,42 @@ export default {
   	//获取用户信息
 	setTimeout( () => {
 		eos.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "video").then((data) => {
-			
-			console.log(data.rows);
+			console.log(data);
 			if(data.rows && data.rows.length){
-				this.video.list = data.rows;
+
+				this.video.list = data.rows.map(row => {
+					var obj = {
+			      		id: row.id,
+			      		title: row.title,
+			      		address: row.address,
+			      		description: row.description,
+			  			ups: row.ups,
+			  			share: row.share,
+			  			owner: row.owner,
+			  			balance: parseFloat(row.balance.split(" ")[0]),
+			  			isUps: false,
+			  			userId: "",
+			  			userName: "" 
+					};
+					return obj;
+				});
+
+				if(this.video.list.length > 1){
+					this.isHasNext = true;
+				};
 
 				this.video.current = this.video.list[0];
-				initVideo(this.videoPath + this.video.current.address, "video/mp4");
+				this.initVideo(this.videoPath + this.video.current.address, "video/mp4");
 
 				eos.getTableRows(true, EOS_CONFIG.contractName, this.video.current.owner, "user").then((data) => {
 
-					console.log(data);
+					if(data.rows && data.rows.length){
+						var user = data.rows[0];
+						console.log(user);
+						this.video.current.userId = user.id;
+						this.video.current.userName = user.name;
+					}
+
 				}).catch((e) => {
 					console.error(e);
 				});
@@ -370,8 +393,8 @@ export default {
 
   			this.video.current = this.video.list[previous];
   			player.src({
-	  			src: this.video.current.src,
-				type: this.video.current.type
+	  			src: this.videoPath + this.video.current.address,
+				type: "video/mp4"
 			});
 			player.play();
   		}
@@ -398,8 +421,8 @@ export default {
 
   			this.video.current = this.video.list[next];
   			player.src({
-	  			src: this.video.current.src,
-				type: this.video.current.type
+	  			src: this.videoPath + this.video.current.address,
+				type: "video/mp4"
 			});
 			player.play();
   		}
@@ -416,12 +439,9 @@ export default {
   			return;
   		}
   		
-		if(vue.video.current.like){//is like yes
-  			vue.video.current.like = false;
-  			vue.video.current.likeCount -= 1;
-  		}else{//no
-  			vue.video.current.like = true;
-  			vue.video.current.likeCount += 1;
+		if(!vue.video.current.isUps){//is like yes
+  			vue.video.current.isUps = true;
+  			vue.video.current.ups += 1;
   		}
   	},
 
