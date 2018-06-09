@@ -1,3 +1,4 @@
+<<<<<<< .mine
 .DS_Store
 node_modules/
 /dist/
@@ -12,3 +13,19 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+=======
+.DS_Store
+node_modules/
+dist/
+npm-debug.log
+.idea
+test*
+*.wast
+*.wasm
+
+
+
+
+
+
+>>>>>>> .theirs
