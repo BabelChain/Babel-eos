@@ -7,13 +7,8 @@
 					<router-link to="/user">
 						<span class="h-img"><img src="../assets/images/head-default.png" alt=""></span>
 					</router-link>
-					<em class="add-friend" v-if="!video.current.user.isFollow" @click="followUser()">+</em>
+					<em class="add-friend" v-if="!video.current.user" @click="followUser()">+</em>
 				</a>
-				<div class="top-tab clear">
-					<a href="#" class="item current">关注</a>
-					<a href="#" class="item">推荐</a>
-					<a href="#" class="item">附近</a>
-				</div>
 			</div>
 			<!-- /顶部 -->
 			<div class="video-player">
@@ -24,9 +19,6 @@
 					<span @click="nextVideo()" v-show="isHasNext" title="next" class="next"></span>
 				</div>
 				<video id="videojs-panorama-player" class="video-js vjs-default-skin vjs-big-play-centered" crossorigin="anonymous">
-					<!-- <source src="../assets/test1.mp4" type="">
-					<source src="../assets/test3.mp4" type="">
-					<source src="../assets/test6.mp4" type=""> -->
 				</video>
 			</div>
 			<div class="video-info">
@@ -55,7 +47,7 @@
 								<img v-if="video.current.like" src="../assets/images/foot-img-liked.png" alt="">
 								<img v-else="video.current.like" src="../assets/images/foot-img-like.png" alt="">
 						    </span>
-							<span class="item-txt">{{video.current.likeCount}}</span>
+							<span class="item-txt">{{video.current.ups}}</span>
 						</a>
 						<a href="#" class="item comment" @click="toggleShowComment()">
 							<span class="item-span"><img src="../assets/images/foot-img-comment.png" alt=""></span>
@@ -79,7 +71,7 @@
 				<!-- /底部 -->
 
 				<!-- 评论弹窗 -->
-				<transition name="comment-slide">
+<!-- 				<transition name="comment-slide">
 					<div id="commentDiv" class="pop-comment" transiton="slide" v-show="isShowComment">
 						<div class="com-box">
 							<div class="tit">
@@ -158,7 +150,7 @@
 							<a href="#" class="call">@</a>
 						</div>
 					</div>
-				</transition>
+				</transition> -->
 				<!-- /评论弹窗 -->
 
 			</div>
@@ -171,15 +163,15 @@
 import videojs from "video.js"
 import three from "three"
 import videojsPanorama from "videojs-panorama"
-import eosjs from "eosjs"
+import EOS from 'eosjs'
+var eos;
 
-var EOS_CONFIG = {
-	contractName: "todo.user", // Contract name
-	contractSender: "todo.user", // User executing the contract (should be paired with private key)
+const EOS_CONFIG = {
+	contractName: "babel.user", //Contract name
+	contractSender: "babel.joe", //User executing the contract (should be paired with private key)
 	clientConfig: {
 		keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // Your private key
-		// httpEndpoint: 'http://127.0.0.1:8888', // EOS http endpoint
-		httpEndpoint: 'http://47.97.165.158:8888' // EOS http endpoint
+		httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
 	}
 }
 
@@ -187,86 +179,99 @@ export default {
   name: 'Index',
   data () {
     return {
+      isScatter: true,
       isPlay: true,
       isHasNext: false,
       isHasPrevious: false,
       isShowComment: false,
+      videoPath: "http://10.101.2.109:8080/ipfs/",
+      imagePath: "http://10.101.2.109:8080/ipfs/",
       video: {
       	currentIndex: 0,
       	current: {
       		id: null,
-      		src: "",
-      		type: "",
-      		like: false,
-  			likeCount: 0,
-  			commentCount: 0,
-  			shareCount: 0,
+      		title: "",
+      		address: "",
+      		description: "",
+  			ups: 0,
+  			share: 0,
+  			owner: "",
+  			balance: 0,
   			user: {
   				userId: "",
   				userName: "",
   				isFollow: false,
 	  		}
       	},
-      	list: []
+      	list: [],
+      	user: {
+
+      	},
+      	bar: {
+
+      	}
       }
     }
   },
   
   created (){
+  	
+  	const network = {
+		blockchain: 'eos',
+		host: '10.101.2.109', // ( or null if endorsed chainId )
+		port: 8888, // ( or null if defaulting to 80 )
+		chainId: 1 || 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f', // Or null 
+	}
 
+	document.addEventListener('scatterLoaded', scatterExtension => {
+	    // Scatter will now be available from the window scope.
+	    // At this stage the connection to Scatter from the application is 
+	    // already encrypted. 
+	    const scatter = window.scatter;
+	    
+	    // It is good practice to take this off the window once you have 
+	    // a reference to it.
+	    window.scatter = null;
+	    
+	    // If you want to require a specific version of Scatter
+	    scatter.requireVersion(3.0);
+		this.isScatter = true;
+	    console.log("scatter installed")
+
+	    // Set up any extra options you want to use eosjs with. 
+	    const eosOptions = {};
+	    
+	    // Get a reference to an 'Eosjs' instance with a Scatter signature provider.
+	    eos = scatter.eos(network, EOS, eosOptions, 'http');
+	});
   },
   
   mounted (){
 
-  	var videoList = [
-  		{
-  			id : 1,
-  			src : "http://10.101.2.109:8080/ipfs/QmTJjsBPAzGdowS7AJ6yxrLvYDkEDgVm4Z8xMkWCTJzNWn",
-  			type: "video/mp4",
-  			like: true,
-  			likeCount: 100000,
-  			commentCount: 4800,
-  			shareCount: 1000,
-  			user: {
-  				userId: "",
-  				userName: "",
-  				isFollow: true,
-  			}
-  		},
-  		{
-  			id : 2,
-  			src : "http://localhost:8080/static/media/test3.d6f59a3.mp4",
-  			type: "video/mp4",
-  			like: false,
-  			likeCount: 50000,
-  			commentCount: 1800,
-  			shareCount: 500,
-  			user: {
-  				userId: "",
-  				userName: "",
-  				isFollow: false,
-  			}
-  		},
-  		{
-  			id : 3,
-  			src : "http://localhost:8080/static/media/test6.b542ec1.mp4",
-  			type: "video/mp4",
-  			like: false,
-  			likeCount: 50000,
-  			commentCount: 1800,
-  			shareCount: 500,
-  			user: {
-  				userId: "",
-  				userName: "",
-  				isFollow: false,
-  			}
-  		}
-	];
+  	
+  	//获取用户信息
+	setTimeout( () => {
+		eos.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "video").then((data) => {
+			
+			console.log(data.rows);
+			if(data.rows && data.rows.length){
+				this.video.list = data.rows;
 
-	this.video.current = videoList[0];
+				this.video.current = this.video.list[0];
+				initVideo(this.videoPath + this.video.current.address, "video/mp4");
 
-	//初始化视频
-  	this.initVideo(this.video.current.src, this.video.current.type);
+				eos.getTableRows(true, EOS_CONFIG.contractName, this.video.current.owner, "user").then((data) => {
+
+					console.log(data);
+				}).catch((e) => {
+					console.error(e);
+				});
+			}
+		}).catch((e) => {
+			console.error(e);
+		})
+	},500);
+
   },
 
   methods: {
@@ -456,9 +461,6 @@ export default {
   		//记住vue实例, 以便在某些回调方法中使用
   		var vue = this;
 
-  		if(!this.video.current.user.isFollow){
-  			this.video.current.user.isFollow = true;
-  		}
   	}
   }
 }
