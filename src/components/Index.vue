@@ -510,10 +510,18 @@
 			},
 
 			openInviteLink: function () {
-				var _this = this;
-				_this.inviteLink = location.origin + "?invite=" + this.video.current.userId;
 
-				alert(_this.inviteLink + '    请复制您的邀请链接');
+				var opt = {
+					bar: this.video.current.owner,
+					inviter: this.video.current.userName,
+					address: this.video.current.address,
+				}
+
+				var request = qs.stringify(opt);
+
+				var url = `${location.origin}?${request}`;
+
+				console.log(url);
 			},
 
 			// 弹出评论窗口
