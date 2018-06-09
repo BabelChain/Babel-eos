@@ -50,7 +50,7 @@
 							<span class="item-txt">{{video.current.ups}}</span>
 						</a>
 						<a href="#" class="item comment" @click="toggleShowComment()">
-							<span class="item-span"><img src="../assets/images/foot-img-comment.png" alt=""></span>
+							<span class="item-span"><img src="../assets/images/foot-img-amount.png" alt=""></span>
 							<span class="item-txt">{{video.current.commentCount}}</span>
 						</a>
 						<a href="#" class="item release">
