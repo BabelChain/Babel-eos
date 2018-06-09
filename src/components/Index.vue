@@ -51,7 +51,7 @@
 						</a>
 						<a href="#" class="item comment" @click="toggleShowComment()">
 							<span class="item-span"><img src="../assets/images/foot-img-amount.png" alt=""></span>
-							<span class="item-txt">{{video.current.commentCount}}</span>
+							<span class="item-txt">{{video.current.balance.toFixed(2)}}</span>
 						</a>
 						<a href="#" class="item release">
 							<span class="item-span"><img src="../assets/images/foot-img-release.png" alt=""></span>
@@ -64,7 +64,7 @@
 						</router-link>
 						<a href="#" class="item share" @click="openInviteLink()">
 							<span class="item-span"><img src="../assets/images/foot-img-share.png" alt=""></span>
-							<span class="item-txt">{{video.current.shareCount}}</span>
+							<span class="item-txt">{{video.current.share}}</span>
 						</a>
 					</div>
 				</div>
@@ -456,6 +456,14 @@ export default {
 		if(!vue.video.current.isUps){//is like yes
   			vue.video.current.isUps = true;
   			vue.video.current.ups += 1;
+
+  			eos.contract(EOS_CONFIG.contractName).then((contract) => {
+			    contract.like(this.video.current.owner, "babel.joe", this.video.current.id, { authorization: [this.video.current.owner] }).then((res) => {
+			        console.log(res)
+			    }).catch((err) => {
+			        console.log(err)
+			    })
+			})
   		}
 	  },
 	  
