@@ -101,7 +101,7 @@ const EOS_CONFIG = {
 	clientConfig: {
 		keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // Your private key
 		// httpEndpoint: 'http://127.0.0.1:8888', // EOS http endpoint
-		httpEndpoint: 'http://203.223.209.25:8888' // EOS http endpoint
+		httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
 	}
 }
 
@@ -134,7 +134,7 @@ export default {
         
         // If you want to require a specific version of Scatter
         scatter.requireVersion(3.0);
-		isScatter = true;
+		this.isScatter = true;
         console.log("scatter installed")
 
         // Set up any extra options you want to use eosjs with. 
@@ -152,6 +152,7 @@ export default {
   	//获取用户信息
 	setTimeout( () => {
 		console.log(eos);
+		// 加载个人信息
 		eos.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "user").then((data) => {
 			var uid = 0;
 			data.rows.map(row => {
@@ -160,6 +161,18 @@ export default {
 		}).catch((e) => {
 			console.error(e);
 		})
+
+		// 加载视频信息
+		// console.log("video")
+		// eos.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "video").then((data) => {
+		// 	var uid = 0;
+		// 	data.rows.map(row => {
+				
+		// 		console.log(row);
+		// 	});
+		// }).catch((e) => {
+		// 	console.error(e);
+		// })
 	},500);
   	
   },
