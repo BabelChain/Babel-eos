@@ -22,21 +22,16 @@
 			</div>
 			<div class="user-name">
 				<div class="name-msg">
-					<p class="name">用户姓名</p>
-					<span class="u-id">用户ID：22880036</span>
+					<p class="name">{{userName}}</p>
+					<span class="u-id">用户ID：{{userId}}</span>
 				</div>
-				<a href="#" class="wb-index">
-					<em class="log"><img src="../assets/images/weibo.png" alt=""></em>
-					<span class="txt">微博主页</span>
-					<i class="arr">&gt;</i>
-				</a>
 			</div>
 			<!-- /用户信息 -->
 			<!-- 认证信息 -->
 			<div class="user-aut">
 				<div class="aut-info">
-					<p class="aut-log"><img src="../assets/images/aut-log.png" alt="">认证信息</p>
-					<p class="wb-name">微博：微博姓名</p>
+					<!-- <p class="aut-log"><img src="../assets/images/aut-log.png" alt="">认证信息</p> -->
+					<!-- <p class="wb-name">微博：微博姓名</p> -->
 					<p class="wb-dse">个人说明，该用户没有留下说明</p>
 					<div class="person-tag"><span class="tag01">地区</span><span class="tag02">星座</span></div>
 				</div>
@@ -45,9 +40,9 @@
 			<!-- /认证信息 -->
 			<!-- 粉丝 -->
 			<div class="user-fan clear">
-				<a href="#" class="item"><em class="num">668</em>关注</a>
-				<a href="#" class="item"><em class="num">33.4w</em>粉丝</a>
-				<a href="#" class="item"><em class="num">5593</em>获赞</a>
+				<a href="#" class="item"><em class="num">{{follow}}</em>关注</a>
+				<a href="#" class="item"><em class="num">{{fans}}</em>粉丝</a>
+				<a href="#" class="item"><em class="num">{{ups}}</em>获赞</a>
 			</div>
 			<!-- /粉丝 -->
 			<!-- 列表 -->
@@ -57,31 +52,9 @@
 					<a href="#" class="item">喜欢<em class="num">86559</em></a>
 				</div>
 				<div class="list-con clear">
-					<router-link to="/playVideo">
-						<a href="#" class="list-item">
-							<span class="lis-vid"><img src="../assets/img/index-img02.jpg" alt=""></span>
-							<em class="like-num">993</em>
-						</a>
-					</router-link>
-					<a href="#" class="list-item">
-						<span class="lis-vid"><img src="../assets/img/index-img01.jpg" alt=""></span>
-						<em class="like-num">993</em>
-					</a>
-					<a href="#" class="list-item">
-						<span class="lis-vid"><img src="../assets/img/user-bg.jpg" alt=""></span>
-						<em class="like-num">993</em>
-					</a>
-					<a href="#" class="list-item">
-						<span class="lis-vid"><img src="../assets/img/user-bg.jpg" alt=""></span>
-						<em class="like-num">993</em>
-					</a>
-					<a href="#" class="list-item">
-						<span class="lis-vid"><img src="../assets/img/index-img01.jpg" alt=""></span>
-						<em class="like-num">993</em>
-					</a>
-					<a href="#" class="list-item">
-						<span class="lis-vid"><img src="../assets/img/index-img02.jpg" alt=""></span>
-						<em class="like-num">993</em>
+					<a href="#" class="list-item" v-for="(item, index) in videoList">
+						<span class="lis-vid"><img :src="videoImgs[index]" alt=""></span>
+						<em class="like-num">{{item.ups}}</em>
 					</a>
 				</div>
 				<div class="no-more">没有更多了~</div>
@@ -92,6 +65,13 @@
 </template>
 
 <script>
+
+import videoImg0 from "../assets/img/video-0.png"
+import videoImg1 from "../assets/img/video-1.png"
+import videoImg2 from "../assets/img/video-2.png"
+import videoImg3 from "../assets/img/video-3.png"
+import videoImg4 from "../assets/img/video-4.png"
+import videoImg5 from "../assets/img/video-5.png"
 
 import EOS from 'eosjs'
 var eos;
@@ -110,7 +90,13 @@ export default {
   data () {
     return {
 	  isScatter: false,
-      msg: 'Welcome to Your User'
+	  userId: "",
+	  userName: "",
+	  follow: 0,
+	  fans: 0,
+	  ups: 0,
+      videoList:[],
+      videoImgs: [videoImg0, videoImg1, videoImg2, videoImg3, videoImg4, videoImg5]
     }
   },
 
@@ -151,28 +137,35 @@ export default {
 
   	//获取用户信息
 	setTimeout( () => {
-		console.log(eos);
+	
 		// 加载个人信息
-		eos.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "user").then((data) => {
-			var uid = 0;
-			data.rows.map(row => {
-				console.log(row);
-			});
+		eos.getTableRows(true, EOS_CONFIG.contractName, "babel.joe", "user").then((data) => {
+			
+			if (data.rows && data.rows.length) {
+				var user = data.rows[0];
+
+				this.userId = user.id;
+				this.userName = user.name;
+				this.follow = user.follow;
+				this.fans = user.fans;
+				this.ups = user.ups;
+
+				eos.getTableRows(true, EOS_CONFIG.contractName, user.owner, "video").then((data) => {
+					if(data.rows && data.rows.length){
+
+						this.videoList = data.rows;
+					}
+				}).catch((e) => {
+					console.error(e);
+				});
+			}
+
+
+			
 		}).catch((e) => {
 			console.error(e);
 		})
 
-		// 加载视频信息
-		// console.log("video")
-		// eos.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "video").then((data) => {
-		// 	var uid = 0;
-		// 	data.rows.map(row => {
-				
-		// 		console.log(row);
-		// 	});
-		// }).catch((e) => {
-		// 	console.error(e);
-		// })
 	},500);
   	
   },
