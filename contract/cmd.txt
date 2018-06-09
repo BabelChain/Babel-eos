@@ -1,16 +1,18 @@
-// 编译智能合约
+// compile contract
 eosiocpp -o babel.wast babel.cpp
 eosiocpp -g babel.abi babel.cpp
 
 // wallet
 cleos wallet unlock -n todo --password PW5KWyHPJC5h8wuToYoBUbK1SVm9UP9NqXqohT7TbLwB5xmDMupxJ
 
-// create account 
-cleos create account eosio babel.user EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
-cleos create account eosio babel.user2 EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
-cleos create account eosio babel.user3 EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+// set contract
+cleos set contract babel ./babel -p babel
 
-cleos create account eosio babel.sky EOS6KQgS51Mx5VWDfZNZqPaLKt7gTfEa1fBm87GQWUuFzp2HR6Kax EOS6KQgS51Mx5VWDfZNZqPaLKt7gTfEa1fBm87GQWUuFzp2HR6Kax
+// create account 
+cleos create account eosio babel EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.user EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.bar EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.dj EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 cleos create account eosio babel.joe EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 
 //create token
@@ -22,49 +24,52 @@ cleos push action eosio.token create '[ "babel.user", "1000000000.0000 DJB"]' -p
 cleos push action eosio.token issue '[ "babel.user", "100.0000 DJB", "memo" ]' -p babel.user
 cleos push action eosio.token issue '[ "babel.user1", "100.0000 DJB", "memo" ]' -p babel.user
 
-// set contract
-cleos set contract babel.user ./babel -p babel.user
-
 // signup
-cleos push action babel.user signup '["babel.user",3, "jc1991","jc1991.png"]' -p babel.user
-cleos push action babel.user signup '["babel.user2",3, "jc1991","jc1991.png"]' -p babel.user2
-cleos push action babel.user signup '["babel.user3",3, "jc1991","jc1991.png"]' -p babel.user3
-cleos push action babel.user signup '["babel.joe",2, "joe","joe.png"]' -p babel.joe
+cleos push action babel signup '["babel.user",1, "jc1991","jc1991.png"]' -p babel.user
+cleos push action babel signup '["babel.user2",1, "jc1991","jc1991.png"]' -p babel.user2
+cleos push action babel signup '["babel.user3",1, "jc1991","jc1991.png"]' -p babel.user3
+cleos push action babel signup '["babel.joe",2, "joe","joe.png"]' -p babel.joe
 
-cleos push action babel.user signup '["babel.sky",1, "sky","sky.png"]' -p babel.sky
+cleos push action babel signup '["babel.user", 0, "jc1991","jc1991.png"]' -p babel.user
+cleos push action babel signup '["babel.bar", 1, "jc1991","jc1991.png"]' -p babel.user
+cleos push action babel signup '["babel.dj", 0, "jc1991","jc1991.png"]' -p babel.user
+cleos push action babel signup '["babel.joe",0, "joe","joe.png"]' -p babel.joe
+
 
 // booking
-cleos push action babel.user booking '["babel.joe","babel.user", "1.0000 DJB","xxx"]' -p babel.joe
-cleos push action babel.user booking '["babel.user","babel.joe", "10.0000 DJB","babel.user2"]' -p babel.joe
+cleos push action babel booking '["babel.joe","babel.user", "1.0000 DJB","xxx"]' -p babel.joe
+cleos push action babel booking '["babel.user","babel.joe", "10.0000 DJB","babel.user2"]' -p babel.joe
 
-//充值
-cleos push action babel.user add '[ "babel.user", "111.0000 DJB" ]' -p babel.user
-cleos push action babel.user sub '[ "babel.user1", "11.0000 DJB" ]' -p babel.user
+// add
+cleos push action babel add '[ "babel.user", "111.0000 DJB" ]' -p babel.user
+cleos push action babel sub '[ "babel.user1", "11.0000 DJB" ]' -p babel.user
 
 //like 
-cleos push action babel.user like '["babel.joe", "babel.user", 1]' -p babel.joe
-
+cleos push action babel like '["babel.joe", "babel.user", 1]' -p babel.joe
 
 //add_video
-cleos push action babel.user post '["babel.joe", 1, "视频1","很搞笑的视频","QmQFK1UCeAmhAfKgEyJaVq6P5VhyeyvVuH4cGqFkcGoNL8"]' -p babel.joe
-cleos push action babel.user post '["babel.joe", 2, "视频2","很性感的视频","QmVMGwzktVsoNLRuKi7V1i6KZx5aqgyrczmKLy2hQd7uaZ"]' -p babel.joe
-cleos push action babel.user post '["babel.joe", 3, "视频3","很cool的视频","QmTJjsBPAzGdowS7AJ6yxrLvYDkEDgVm4Z8xMkWCTJzNWn"]' -p babel.joe
-
-cleos push action babel.user post '["babel.joe", 4, "视频4","很666的视频","QmTWrUs2pi15P2LG7W9qnFjqhyptyAWeFiRa9y6jWrF1rc"]' -p babel.joe
-cleos push action babel.user post '["babel.joe", 5, "视频5","很美的视频","QmXyg9mttQdx1tpWodCcPeeReLxDEg8eb5R98UfkskT7ZK"]' -p babel.joe
-cleos push action babel.user post '["babel.joe", 6, "视频6","很摸不着头脑的视频","QmVEQLniy9giYndmwEYPTNPzz4bHZvcUAJy9WkUQ3WJMJ3"]' -p babel.joe
+cleos push action babel post '["babel.joe", 1, "视频1","很搞笑的视频","QmQFK1UCeAmhAfKgEyJaVq6P5VhyeyvVuH4cGqFkcGoNL8"]' -p babel.joe
+cleos push action babel post '["babel.joe", 2, "视频2","很性感的视频","QmVMGwzktVsoNLRuKi7V1i6KZx5aqgyrczmKLy2hQd7uaZ"]' -p babel.joe
+cleos push action babel post '["babel.joe", 3, "视频3","很cool的视频","QmTJjsBPAzGdowS7AJ6yxrLvYDkEDgVm4Z8xMkWCTJzNWn"]' -p babel.joe
+cleos push action babel post '["babel.joe", 4, "视频4","很666的视频","QmTWrUs2pi15P2LG7W9qnFjqhyptyAWeFiRa9y6jWrF1rc"]' -p babel.joe
+cleos push action babel post '["babel.joe", 5, "视频5","很美的视频","QmXyg9mttQdx1tpWodCcPeeReLxDEg8eb5R98UfkskT7ZK"]' -p babel.joe
+cleos push action babel post '["babel.joe", 6, "视频6","很摸不着头脑的视频","QmVEQLniy9giYndmwEYPTNPzz4bHZvcUAJy9WkUQ3WJMJ3"]' -p babel.joe
 
 //get tables
-cleos get table babel.user babel.user user
-cleos get table babel.user babel.user2 user
-cleos get table babel.user babel.joe user
+cleos get table babel babel.user user
+cleos get table babel babel.user2 user
+cleos get table babel babel.joe user
 
-cleos get table babel.user babel.user video
-cleos get table babel.user babel.joe video
+cleos get table babel babel.user video
+cleos get table babel babel.joe video
 
-cleos get table babel.user babel.user log
-cleos get table babel.user babel.joe log
+cleos get table babel babel.user log
+cleos get table babel babel.joe log
 
+cleos get table babel babel.user user
+cleos get table babel babel.dj user
+cleos get table babel babel.bar user
+cleos get table babel babel.joe user
 
 
 01 Vogue_Club.mp4

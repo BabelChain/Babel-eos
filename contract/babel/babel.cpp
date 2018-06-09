@@ -24,20 +24,20 @@ class babel : public eosio::contract
 
     // @abi action
     void signup(account_name author,
-                const uint32_t id,
+                const uint32_t flag,
                 const std::string &name,
                 const std::string &avatar)
     {
         user_index users(_self, author);
 
         users.emplace(_self, [&](auto &acnt) {
-            acnt.id = id;
+            acnt.flag = flag;
             acnt.owner = author;
             acnt.name = name;
             acnt.avatar = avatar;
         });
 
-        eosio::print("account#", id, name, " created");
+        eosio::print("account#", name, " created");
     }
 
     // @abi action
@@ -263,7 +263,6 @@ class babel : public eosio::contract
     // @abi table user i64
     struct user
     {
-        uint64_t id;
 
         account_name owner;
 
@@ -283,7 +282,7 @@ class babel : public eosio::contract
         std::string name;   //昵称
         std::string avatar; //头像
 
-        EOSLIB_SERIALIZE(user, (id)(owner)(balance)(flag)(age)(address)(fans)(follow)(ups)(coin)(card)(energy)(name)(avatar))
+        EOSLIB_SERIALIZE(user, (owner)(balance)(flag)(age)(address)(fans)(follow)(ups)(coin)(card)(energy)(name)(avatar))
     };
 
     // @abi table log i64
