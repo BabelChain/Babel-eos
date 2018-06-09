@@ -94,7 +94,7 @@
 <script>
 
 import EOS from 'eosjs'
-
+var eos;
 const EOS_CONFIG = {
 	contractName: "babel.user", // Contract name
 	contractSender: "babel.user", // User executing the contract (should be paired with private key)
@@ -109,25 +109,59 @@ export default {
   name: 'User',
   data () {
     return {
+	  isScatter: false,
       msg: 'Welcome to Your User'
     }
   },
 
   created () {
-  	this.eosClient = EOS.Localnet(EOS_CONFIG.clientConfig)
+	const network = {
+		blockchain: 'eos',
+		host: '10.101.2.109', // ( or null if endorsed chainId )
+		port: 8888, // ( or null if defaulting to 80 )
+		chainId: 1 || 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f', // Or null to fetch automatically ( takes longer )
+	}
+
+	document.addEventListener('scatterLoaded', scatterExtension => {
+        // Scatter will now be available from the window scope.
+        // At this stage the connection to Scatter from the application is 
+        // already encrypted. 
+        const scatter = window.scatter;
+        
+        // It is good practice to take this off the window once you have 
+        // a reference to it.
+        window.scatter = null;
+        
+        // If you want to require a specific version of Scatter
+        scatter.requireVersion(3.0);
+		isScatter = true;
+        console.log("scatter installed")
+
+        // Set up any extra options you want to use eosjs with. 
+        const eosOptions = {};
+        
+        // Get a reference to an 'Eosjs' instance with a Scatter signature provider.
+        eos = scatter.eos( network, EOS, eosOptions, 'http' );
+        
+        })
+  	//this.eosClient = EOS.Localnet(EOS_CONFIG.clientConfig)
   },
 
   mounted () {
 
   	//获取用户信息
-  	this.eosClient.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "user").then((data) => {
-		var uid = 0;
-		data.rows.map(row => {
-			console.log(row);
-		});
-	}).catch((e) => {
-		console.error(e);
-	})
+	setTimeout( () => {
+		console.log(eos);
+		eos.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "user").then((data) => {
+			var uid = 0;
+			data.rows.map(row => {
+				console.log(row);
+			});
+		}).catch((e) => {
+			console.error(e);
+		})
+	},500);
+  	
   },
 
   methods: {
