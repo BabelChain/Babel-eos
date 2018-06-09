@@ -75,9 +75,9 @@
 	import videoImg5 from "../assets/img/video-5.png"
 
 	import EOS from 'eosjs'
-	var eos;
+	
 	const EOS_CONFIG = {
-		contractName: "babel.user", // Contract name
+		contractName: "babel", // Contract name
 		contractSender: "babel.joe", // User executing the contract (should be paired with private key)
 		clientConfig: {
 			keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], 

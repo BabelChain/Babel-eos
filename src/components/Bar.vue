@@ -10,26 +10,27 @@
 		<div class="bar">
 			<div class="bar-msg">
 				<div class="bar-bg"><img src="../assets/img/index-img02.jpg" alt=""></div>
-				<a href="#" class="res-seat" @click="order()">订座</a>
+				<a href="#" class="res-seat" v-if="isOrder" style="background: #ccc;">已订座</a>
+				<a href="#" class="res-seat" @click="order()" v-else>订座1.00&nbsp;DJB</a>
 				<div class="bar-img">
 					<span class="img"><img src="../assets/img/user-bg.jpg" alt=""></span>
-					<span class="name">{{bar.name}}</span>
+					<span class="name">{{userName}}</span>
 				</div>
 			</div>
 			<div class="bar-score clear">
 				<span class="item">
 					<em class="img"><img src="../assets/images/foot-img-like.png" alt=""></em>
-					<span class="txt">评分&nbsp;&nbsp;{{bar.grade}}</span>
+					<span class="txt">评分&nbsp;&nbsp;5.0</span>
 				</span>
 				<span class="item">
-					<em class="img">&#65509;</em>
-					<span class="txt">返利&nbsp;&nbsp;{{bar.rebate}}</span>
+					<em class="img">$</em>
+					<span class="txt">&nbsp;&nbsp;{{balance + ' ' + symbol}}</span>
 				</span>
 			</div>
-			<div class="bar-int">{{bar.brief}}</div>
+			<div class="bar-int">jsdfgjsdghdjdgsdjgggh</div>
 			<div class="bar-address">
 				<p class="tit">地址：</p>
-				<p class="txt address">{{bar.address}}<img src="../assets/images/local.png" alt=""></p>
+				<p class="txt address">不知道什么地方<img src="../assets/images/local.png" alt=""></p>
 			</div>
 			<div class="bar-star">
 				<p class="tit">艺人：</p>
@@ -48,13 +49,13 @@
 					</a>
 				</div>
 			</div>
-			<div class="bar-com">
+			<!-- <div class="bar-com">
 				<a href="#" class="item" @click="grade()" :style="bar.isGrade?'background: #aaa;':''">
 					<span v-if="!bar.isGrade"><i class="icon"><img src="../assets/images/small-like.png" alt=""></i>评分</span>
 					<span v-else>已评分</span>
 				</a>
 				<a href="#" class="item"><b class="img">+</b>推荐</a>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -62,13 +63,12 @@
 <script>
 
 import EOS from 'eosjs'
-var eos;
+
 const EOS_CONFIG = {
-	contractName: "babel.user", // Contract name
-	contractSender: "babel.user", // User executing the contract (should be paired with private key)
+	contractName: "babel", // Contract name
+	contractSender: "babel.joe", // User executing the contract (should be paired with private key)
 	clientConfig: {
 		keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // Your private key
-		// httpEndpoint: 'http://127.0.0.1:8888', // EOS http endpoint
 		httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
 	}
 }
@@ -77,21 +77,19 @@ export default {
   name: 'Bar',
   data () {
     return {
-      bar: {
-      	id: "1",
-      	logo: "",
-      	name: "苏荷酒吧",
-      	grade: "5.0",
-      	rebate: 2.5,
-      	brief: "酒吧已成为深圳人休闲必去的地方，是青春和个性的聚集地，那里的酒吧老板大多都是很年轻的新人类，所营造的酒吧氛围不论是热烈还是沉静，都能让人从中找到年轻的感觉",
-      	address: "深圳笋岗西路3001号市政设计大厦2楼",
-      	isGrade: false
-      }
+    	isOrder: false,
+  		userId: "",
+		userName: "",
+		follow: 0,
+		fans: 0,
+		ups: 0,
+		balance: 0,
+		symbol: "DJB"
     }
   },
 
   created () {
-	  const network = {
+	  /*const network = {
 		blockchain: 'eos',
 		host: '10.101.2.109', // ( or null if endorsed chainId )
 		port: 8888, // ( or null if defaulting to 80 )
@@ -119,37 +117,54 @@ export default {
         // Get a reference to an 'Eosjs' instance with a Scatter signature provider.
         eos = scatter.eos( network, EOS, eosOptions, 'http' );
         
-        })
+        })*/
+
+        this.eosClient = EOS(EOS_CONFIG.clientConfig);
   },
 
   mounted () {
 
-	
+  	//获取酒吧信息
+	this.eosClient.getTableRows(true, EOS_CONFIG.contractName, "babel.bar", "user").then((data) => {
+
+		if (data.rows && data.rows.length) {
+			var user = data.rows[0];
+
+			this.userId = user.id;
+			this.userName = user.name;
+			this.follow = user.follow;
+			this.fans = user.fans;
+			this.ups = user.ups;
+
+			var balances = user.balance.split(" ");
+			this.balance = parseFloat(balances[0]);
+			this.symbol = balances[1];
+		}
+	}).catch((e) => {
+		console.error(e);
+	})
   },
 
   methods: {
-  	order: function(){
-		var contract_name = "babel.user"
-		var bar_name = "babel.joe"
-		var user_name = "babel.user"
-		var money = "1.0000 DJB"
-		var inviter = "babel.alice"
-		//获取用户信息
-		console.log(eos)
-		console.log("booking" + contract_name)
-		// 加载个人信息
-		this.eos.contract(contract_name).then((contract) => {
-			contract.booking(bar_name, user_name, money, inviter, 
-				{ authorization: [user_name] }).then((res) => {
-				console.log(res)
-			}).catch((err) => {
-				console.log(err)
-			})
-		})
-  	},
 
-  	grade: function(){
-  		
+  	//订座
+  	order: function(){
+
+  		if(window.confirm("您确认要订座，确认即会从您账号扣除1.00 DJB到酒吧？")){
+  			var bar_name = "babel.bar"
+			var user_name = "babel.joe"
+			var money = "1.0000 DJB"
+			var inviter = "babel.alice"
+
+			this.eosClient.contract(EOS_CONFIG.contractName).then((contract) => {
+			    contract.booking(bar_name, user_name, money, inviter, { authorization: [user_name] }).then((res) => {
+			        this.balance += 1;
+			        this.isOrder = true;
+			    }).catch((err) => {
+			        console.log(err);
+			    })
+			})
+  		}
   	}
   }
 }
