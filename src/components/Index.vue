@@ -28,7 +28,7 @@
 						<div class="tag"><a href="#" class="item">标签1</a><a href="#" class="item">标签2</a></div>
 						<div class="activity">
 							<a href="#" class="item">
-								<router-link to="/djrank"><em class="item-em">#</em>百大Dj年度投票排行榜</router-link>
+								<!-- <router-link to="/djrank"> --><em class="item-em">#</em>百大Dj年度投票排行榜<!-- </router-link> -->
 							</a>
 						</div>
 						<a href="#" class="user-name">@{{video.current.userName}}</a>
@@ -499,6 +499,7 @@
 					eos.contract(EOS_CONFIG.contractName).then((contract) => {
 						contract.like(this.video.current.owner, "babel.joe", this.video.current.id, { authorization: ["babel.joe"] }).then((res) => {
 							console.log(res)
+							vue.video.current.balance += 1;
 						}).catch((err) => {
 							console.log(err)
 						})

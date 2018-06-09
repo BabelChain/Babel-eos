@@ -59,13 +59,12 @@
 <script>
 
 import EOS from 'eosjs'
-var eos;
 
 const EOS_CONFIG = {
 	contractName: "babel.user", //Contract name
 	contractSender: "babel.joe", //User executing the contract (should be paired with private key)
 	clientConfig: {
-		keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // Your private key
+		keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'],
 		httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
 	}
 }
@@ -83,7 +82,7 @@ export default {
   },
 
   created (){
-  	const network = {
+/*  	const network = {
 		blockchain: 'eos',
 		host: '10.101.2.109', // ( or null if endorsed chainId )
 		port: 8888, // ( or null if defaulting to 80 )
@@ -110,33 +109,33 @@ export default {
 	    
 	    // Get a reference to an 'Eosjs' instance with a Scatter signature provider.
 	    eos = scatter.eos(network, EOS, eosOptions, 'http');
-	});
+	});*/
+
+	this.eosClient = EOS(EOS_CONFIG.clientConfig);
   },
 
   mounted () {
-	
-	setTimeout( () => {
-		eos.getTableRows(true, EOS_CONFIG.contractName, "babel.joe", "user").then((data) => {
 
-			if(data.rows && data.rows.length){
-				var user = data.rows[0];
-				console.log(user);
-				this.userId = user.id;
-				this.userName = user.name;
-				this.balance = parseFloat(user.balance.split(" ")[0]);
+	this.eosClient.getTableRows(true, EOS_CONFIG.contractName, "babel.joe", "user").then((data) => {
 
-				eos.getTableRows(true, EOS_CONFIG.contractName, user.owner, "log").then((data) => {
-				    this.logs = data.rows;
-				    console.log( this.logs);
-				}).catch((e) => {	
-				    console.error(e);
-				})
-			}
+		if(data.rows && data.rows.length){
+			var user = data.rows[0];
+			console.log(user);
+			this.userId = user.id;
+			this.userName = user.name;
+			this.balance = parseFloat(user.balance.split(" ")[0]);
 
-		}).catch((e) => {
-			console.error(e);
-		});
-	}, 500);
+			this.eosClient.getTableRows(true, EOS_CONFIG.contractName, user.owner, "log").then((data) => {
+			    this.logs = data.rows;
+			    console.log( this.logs);
+			}).catch((e) => {	
+			    console.error(e);
+			})
+		}
+
+	}).catch((e) => {
+		console.error(e);
+	});
   },
 
   methods: {

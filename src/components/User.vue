@@ -17,7 +17,7 @@
 				<div class="user-follow clear">
 					<a href="#" class="item"><img src="../assets/images/more.png" alt=""></a>
 					<a href="#" class="item"><img src="../assets/images/share.png" alt=""></a>
-					<a href="#" class="item flo">+关注</a>
+					<a @click="followUser()" href="#" :class="isFollow?'item disflo':'item flo'">{{isFollow?'取消关注':'关注'}}</a>
 				</div>
 			</div>
 			<div class="user-name">
@@ -78,10 +78,9 @@
 	var eos;
 	const EOS_CONFIG = {
 		contractName: "babel.user", // Contract name
-		contractSender: "babel.user", // User executing the contract (should be paired with private key)
+		contractSender: "babel.joe", // User executing the contract (should be paired with private key)
 		clientConfig: {
-			keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // Your private key
-			// httpEndpoint: 'http://127.0.0.1:8888', // EOS http endpoint
+			keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], 
 			httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
 		}
 	}
@@ -91,6 +90,7 @@
 		data() {
 			return {
 				isScatter: false,
+				isFollow: false,
 				userId: "",
 				userName: "",
 				follow: 0,
@@ -103,7 +103,7 @@
 
 		created() {
 			
-			const network = {
+/*			const network = {
 				blockchain: 'eos',
 				host: '10.101.2.109', // ( or null if endorsed chainId )
 				port: 8888, // ( or null if defaulting to 80 )
@@ -131,7 +131,13 @@
 				// Get a reference to an 'Eosjs' instance with a Scatter signature provider.
 				eos = scatter.eos(network, EOS, eosOptions, 'http');
 
-				eos.getTableRows(true, EOS_CONFIG.contractName, "babel.joe", "user").then((data) => {
+			})*/
+			this.eosClient = EOS(EOS_CONFIG.clientConfig);
+		},
+
+		mounted() {
+
+			this.eosClient.getTableRows(true, EOS_CONFIG.contractName, "babel.joe", "user").then((data) => {
 
 					if (data.rows && data.rows.length) {
 						var user = data.rows[0];
@@ -142,7 +148,7 @@
 						this.fans = user.fans;
 						this.ups = user.ups;
 
-						eos.getTableRows(true, EOS_CONFIG.contractName, user.owner, "video").then((data) => {
+						this.eosClient.getTableRows(true, EOS_CONFIG.contractName, user.owner, "video").then((data) => {
 							if (data.rows && data.rows.length) {
 
 								this.videoList = data.rows;
@@ -157,19 +163,16 @@
 				}).catch((e) => {
 					console.error(e);
 				})
-
-
-			})
-			//this.eosClient = EOS.Localnet(EOS_CONFIG.clientConfig)
-		},
-
-		mounted() {
-
-			
 		},
 
 		methods: {
-
+			followUser: function(){
+				if(this.isFollow){
+					this.isFollow = false;
+				}else{
+					this.isFollow = true;
+				}
+			}
 		}
 	}
 

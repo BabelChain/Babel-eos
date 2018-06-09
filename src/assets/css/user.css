@@ -71,6 +71,10 @@
   background: #ff2c55;
   font-size: 0.28rem;
 }
+.user-info .user-follow .item.disflo {
+  background: #ccc;
+  font-size: 0.28rem;
+}
 .user-name {
   padding-bottom: 0.3rem;
   margin: 0 0.3rem;
