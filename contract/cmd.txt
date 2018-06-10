@@ -13,28 +13,23 @@ cleos create account eosio babel EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMv
 cleos create account eosio babel.user EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 cleos create account eosio babel.bar EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 cleos create account eosio babel.dj EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.dj2 EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 cleos create account eosio babel.joe EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 
 //create token
 cleos create account eosio eosio.token EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 cleos set contract eosio.token ~/Workspace/eos/build/contracts/eosio.token -p eosio.token
-
 cleos push action eosio.token create '[ "babel.user", "1000000000.0000 DJB"]' -p eosio.token
 
 cleos push action eosio.token issue '[ "babel.user", "100.0000 DJB", "memo" ]' -p babel.user
 cleos push action eosio.token issue '[ "babel.user1", "100.0000 DJB", "memo" ]' -p babel.user
 
 // signup
-cleos push action babel signup '["babel.user",1, "jc1991","jc1991.png"]' -p babel.user
-cleos push action babel signup '["babel.user2",1, "jc1991","jc1991.png"]' -p babel.user2
-cleos push action babel signup '["babel.user3",1, "jc1991","jc1991.png"]' -p babel.user3
-cleos push action babel signup '["babel.joe",2, "joe","joe.png"]' -p babel.joe
-
-cleos push action babel signup '["babel.user", 0, "jc1991","jc1991.png"]' -p babel.user
-cleos push action babel signup '["babel.bar", 1, "jc1991","jc1991.png"]' -p babel.user
-cleos push action babel signup '["babel.dj", 0, "jc1991","jc1991.png"]' -p babel.user
-cleos push action babel signup '["babel.joe",0, "joe","joe.png"]' -p babel.joe
-
+cleos push action babel signup '["babel.user", 0, "Alice","Alice.png","Hi,I am Alice. ","babel.bar"]' -p babel.user
+cleos push action babel signup '["babel.joe",0, "joe","joe.png","Hi,I am Joe.","babel.bar"]' -p babel.joe
+cleos push action babel signup '["babel.bar", 1, "vouge club","jc1991.png", "very cool bar",""]' -p babel.user
+cleos push action babel signup '["babel.dj", 2, "dj one","jc1991.png","Hi,I am a DJ.","babel.bar"]' -p babel.user
+cleos push action babel signup '["babel.dj2", 3, "dj two","jc1991.png", "Hi,I am DJ too.", "babel.bar"]' -p babel.user
 
 // booking
 cleos push action babel booking '["babel.joe","babel.user", "1.0000 DJB","xxx"]' -p babel.joe
@@ -48,12 +43,19 @@ cleos push action babel sub '[ "babel.user1", "11.0000 DJB" ]' -p babel.user
 cleos push action babel like '["babel.joe", "babel.user", 1]' -p babel.joe
 
 //add_video
-cleos push action babel post '["babel.joe", 1, "视频1","很搞笑的视频","QmQFK1UCeAmhAfKgEyJaVq6P5VhyeyvVuH4cGqFkcGoNL8"]' -p babel.joe
-cleos push action babel post '["babel.joe", 2, "视频2","很性感的视频","QmVMGwzktVsoNLRuKi7V1i6KZx5aqgyrczmKLy2hQd7uaZ"]' -p babel.joe
-cleos push action babel post '["babel.joe", 3, "视频3","很cool的视频","QmTJjsBPAzGdowS7AJ6yxrLvYDkEDgVm4Z8xMkWCTJzNWn"]' -p babel.joe
-cleos push action babel post '["babel.joe", 4, "视频4","很666的视频","QmTWrUs2pi15P2LG7W9qnFjqhyptyAWeFiRa9y6jWrF1rc"]' -p babel.joe
-cleos push action babel post '["babel.joe", 5, "视频5","很美的视频","QmXyg9mttQdx1tpWodCcPeeReLxDEg8eb5R98UfkskT7ZK"]' -p babel.joe
-cleos push action babel post '["babel.joe", 6, "视频6","很摸不着头脑的视频","QmVEQLniy9giYndmwEYPTNPzz4bHZvcUAJy9WkUQ3WJMJ3"]' -p babel.joe
+cleos push action babel post '["babel.dj", 1, "视频1","is a funny video","QmQFK1UCeAmhAfKgEyJaVq6P5VhyeyvVuH4cGqFkcGoNL8"]' -p babel.joe
+cleos push action babel post '["babel.dj", 2, "视频2","is a cool video","QmVMGwzktVsoNLRuKi7V1i6KZx5aqgyrczmKLy2hQd7uaZ"]' -p babel.joe
+cleos push action babel post '["babel.dj", 3, "视频3","is a cool video","QmTJjsBPAzGdowS7AJ6yxrLvYDkEDgVm4Z8xMkWCTJzNWn"]' -p babel.joe
+cleos push action babel post '["babel.dj", 4, "视频4","is a sexy video","QmTWrUs2pi15P2LG7W9qnFjqhyptyAWeFiRa9y6jWrF1rc"]' -p babel.joe
+cleos push action babel post '["babel.dj", 5, "视频5","is a cool video","QmXyg9mttQdx1tpWodCcPeeReLxDEg8eb5R98UfkskT7ZK"]' -p babel.joe
+cleos push action babel post '["babel.dj", 6, "视频6","is a funny video","QmVEQLniy9giYndmwEYPTNPzz4bHZvcUAJy9WkUQ3WJMJ3"]' -p babel.joe
+
+cleos push action babel post '["babel.joe", 1, "视频1","is a sexy video","QmQFK1UCeAmhAfKgEyJaVq6P5VhyeyvVuH4cGqFkcGoNL8"]' -p babel.joe
+cleos push action babel post '["babel.joe", 2, "视频2","is a sexy video","QmVMGwzktVsoNLRuKi7V1i6KZx5aqgyrczmKLy2hQd7uaZ"]' -p babel.joe
+cleos push action babel post '["babel.joe", 3, "视频3","is a funny video","QmTJjsBPAzGdowS7AJ6yxrLvYDkEDgVm4Z8xMkWCTJzNWn"]' -p babel.joe
+cleos push action babel post '["babel.dj2", 4, "视频4","is a cool video","QmTWrUs2pi15P2LG7W9qnFjqhyptyAWeFiRa9y6jWrF1rc"]' -p babel.joe
+cleos push action babel post '["babel.dj2", 5, "视频5","is a funny video","QmXyg9mttQdx1tpWodCcPeeReLxDEg8eb5R98UfkskT7ZK"]' -p babel.joe
+cleos push action babel post '["babel.dj2", 6, "视频6","is a funny video","QmVEQLniy9giYndmwEYPTNPzz4bHZvcUAJy9WkUQ3WJMJ3"]' -p babel.joe
 
 //get tables
 cleos get table babel babel.user user
@@ -68,6 +70,7 @@ cleos get table babel babel.joe log
 
 cleos get table babel babel.user user
 cleos get table babel babel.dj user
+cleos get table babel babel.dj2 user
 cleos get table babel babel.bar user
 cleos get table babel babel.joe user
 

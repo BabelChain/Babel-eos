@@ -26,7 +26,10 @@ class babel : public eosio::contract
     void signup(account_name author,
                 const uint32_t flag,
                 const std::string &name,
-                const std::string &avatar)
+                const std::string &avatar,
+                const std::string &desc,
+                account_name bar
+                )
     {
         user_index users(_self, author);
 
@@ -35,6 +38,9 @@ class babel : public eosio::contract
             acnt.owner = author;
             acnt.name = name;
             acnt.avatar = avatar;
+
+            acnt.desc = desc;
+            acnt.bar = bar;
         });
 
         eosio::print("account#", name, " created");
@@ -140,7 +146,7 @@ class babel : public eosio::contract
                 new_log.id = logs.available_primary_key();
                 new_log.owner = user;
                 new_log.type = 0;
-                new_log.description = "订座";
+                new_log.description = "Booking";
                 new_log.quantity = quantity;
             });
 
@@ -155,7 +161,7 @@ class babel : public eosio::contract
                 new_log.id = bar_logs.available_primary_key();
                 new_log.owner = bar;
                 new_log.type = 1;
-                new_log.description = "订座";
+                new_log.description = "Booking";
                 new_log.quantity = asset(quantity.amount * 0.8, S(4, DJB));
                 ;
             });
@@ -171,7 +177,7 @@ class babel : public eosio::contract
                 new_log.id = inviter_logs.available_primary_key();
                 new_log.owner = inviter;
                 new_log.type = 1;
-                new_log.description = "推广分佣";
+                new_log.description = "Share";
                 new_log.quantity = asset(quantity.amount * 0.2, S(4, DJB));
             });
         }
@@ -191,7 +197,7 @@ class babel : public eosio::contract
                 new_log.id = logs.available_primary_key();
                 new_log.owner = user;
                 new_log.type = 0;
-                new_log.description = "订座";
+                new_log.description = "Booking";
                 new_log.quantity = quantity;
             });
 
@@ -206,7 +212,7 @@ class babel : public eosio::contract
                 new_log.id = bar_logs.available_primary_key();
                 new_log.owner = bar;
                 new_log.type = 1;
-                new_log.description = "订座";
+                new_log.description = "Booking";
                 new_log.quantity = quantity;
                 ;
             });
@@ -265,6 +271,8 @@ class babel : public eosio::contract
     {
 
         account_name owner;
+        
+        account_name bar;
 
         uint64_t primary_key() const { return owner; }
 
@@ -281,8 +289,9 @@ class babel : public eosio::contract
 
         std::string name;   //昵称
         std::string avatar; //头像
+        std::string desc;   //昵称
 
-        EOSLIB_SERIALIZE(user, (owner)(balance)(flag)(age)(address)(fans)(follow)(ups)(coin)(card)(energy)(name)(avatar))
+        EOSLIB_SERIALIZE(user, (owner)(bar)(balance)(flag)(age)(address)(fans)(follow)(ups)(coin)(card)(energy)(name)(avatar)(desc))
     };
 
     // @abi table log i64
