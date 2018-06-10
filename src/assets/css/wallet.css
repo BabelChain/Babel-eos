@@ -42,7 +42,7 @@ header {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   flex: 1;
-  max-width: 50%;
+  /*max-width: 50%;*/
 }
 .wallet .balance .my-bal .bal-num .img {
   display: block;

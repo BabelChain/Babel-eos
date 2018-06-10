@@ -4,10 +4,13 @@
 			<!-- 顶部 -->
 			<div class="index-top clear">
 				<a href="#" class="top-head">
-					<router-link to="/user">
-						<span class="h-img"><img src="../assets/images/head-default.png" alt=""></span>
+					<router-link :to="{name:'User', params:{owner:video.current.owner}}">
+						<span class="h-img">
+							<img v-if="video.current.flag != null" :src="portraits[video.current.flag]" alt="">
+							<img v-else src="../assets/images/head-default.png" alt="">
+						</span>
 					</router-link>
-					<em class="add-friend" v-if="!video.current.user" @click="followUser()">+</em>
+					<em class="add-friend" v-if="video.current.flag==2">DJ</em>
 				</a>
 			</div>
 			<!-- /顶部 -->
@@ -25,19 +28,20 @@
 				<!-- 视频信息 -->
 				<div class="info-box">
 					<div class="info-left">
-						<div class="tag"><a href="#" class="item">标签1</a><a href="#" class="item">标签2</a></div>
+						<!-- <div class="tag">
+							<a href="#" class="item">标签1</a><a href="#" class="item">标签2</a></div>
 						<div class="activity">
 							<a href="#" class="item">
-								<!-- <router-link to="/djrank"> --><em class="item-em">#</em>百大Dj年度投票排行榜<!-- </router-link> -->
+								<em class="item-em">#</em>百大Dj年度投票排行榜
 							</a>
-						</div>
+						</div> -->
 						<a href="#" class="user-name">@{{video.current.userName}}</a>
 						<p class="video-txt">{{video.current.description}}</p>
 					</div>
 					<div class="info-right">
 						<router-link to="/bar">
 							<a href="#" class="song-img"><img src="../assets/images/song-default.png" alt=""></a>
-							<a href="#" class="song-name">夜色酒吧</a>
+							<a href="#" class="song-name">vouge club</a>
 						</router-link>
 					</div>
 				</div>
@@ -55,7 +59,7 @@
 						</a>
 						<a href="#" class="item comment" @click="toggleShowComment()">
 							<span class="item-span"><img src="../assets/images/foot-img-amount.png" alt=""></span>
-							<span class="item-txt">{{video.current.balance.toFixed(2)}}</span>
+							<span class="item-txt">{{video.current.balance}}</span>
 						</a>
 						<a href="#" class="item release">
 							<span class="item-span"><img src="../assets/images/foot-img-release.png" alt=""></span>
@@ -63,12 +67,12 @@
 						<router-link to="/user">
 							<a href="#" class="item my">
 								<span class="item-span"><img src="../assets/images/foot-img-my.png" alt=""></span>
-								<span class="item-txt">我的</span>
+								<span class="item-txt">me</span>
 							</a>
 						</router-link>
 						<a href="#" class="item share" @click="openInviteLink()">
 							<span class="item-span"><img src="../assets/images/foot-img-share.png" alt=""></span>
-							<span class="item-txt">{{video.current.share}}</span>
+							<span class="item-txt">share</span>
 						</a>
 					</div>
 				</div>
@@ -170,6 +174,10 @@
 	import qs from 'qs'
 	var eos;
 
+	import portrait1 from "../assets/img/portrait1.jpg"
+	import portrait2 from "../assets/img/portrait2.jpg"
+	import portrait3 from "../assets/img/portrait3.jpg"
+
 	const EOS_CONFIG = {
 		contractName: "babel", //Contract name
 		contractSender: "babel.joe", //User executing the contract (should be paired with private key)
@@ -203,33 +211,17 @@
 						balance: 0,
 						isUps: false,
 						userId: "",
-						userName: ""
+						userName: "",
+						flag: null,
+						bar: ""
 					},
-					list: [],
-					user: {
-
-					},
-					bar: {
-
-					}
-				}
+					list: []
+				},
+				portraits: [portrait1, portrait2, portrait3]
 			}
 		},
 
 		created() {
-
-			//获取推广id ?invite=id
-			var inviteid = qs.parse(location.search.slice(1)).invite;
-			console.log(inviteid)
-			if (inviteid) {
-				this.invite = inviteid;
-				localStorage.setItem("INVITE" + this.version, inviteid);
-			} else {
-				inviteid = localStorage.getItem("INVITE" + this.version);
-				if (inviteid) {
-					this.invite = inviteid;
-				}
-			}
 
 			const network = {
 				blockchain: 'eos',
@@ -280,55 +272,69 @@
 
 		mounted() {
 
+			//获取推广url的参数信息
+			var inviteParam = qs.parse(location.search.slice(1));
+			console.log(inviteParam);
+			if (inviteParam && inviteParam.inviter) {
+				localStorage.setItem("INVITE", inviteParam.inviter);
+			} 
 
-			//获取用户信息
-			setTimeout(() => {
-				eos.getTableRows(true, EOS_CONFIG.contractName, EOS_CONFIG.contractSender, "video").then((data) => {
-					console.log(data);
-					if (data.rows && data.rows.length) {
+			//获取视频列表
+			eos.getTableRows(true, EOS_CONFIG.contractName, "babel.dj", "video").then((data) => {
+				console.log(data);
+				if (data.rows && data.rows.length) {
 
-						this.video.list = data.rows.map(row => {
-							var obj = {
-								id: row.id,
-								title: row.title,
-								address: row.address,
-								description: row.description,
-								ups: row.ups,
-								share: row.share,
-								owner: row.owner,
-								balance: parseFloat(row.balance.split(" ")[0]),
-								isUps: false,
-								userId: "",
-								userName: ""
-							};
-							return obj;
-						});
-
-						if (this.video.list.length > 1) {
-							this.isHasNext = true;
+					this.video.list = data.rows.map(row => {
+						var obj = {
+							id: row.id,
+							title: row.title,
+							address: row.address,
+							description: row.description,
+							ups: row.ups,
+							share: row.share,
+							owner: row.owner,
+							balance: parseFloat(row.balance.split(" ")[0]),
+							isUps: false,
+							userId: "",
+							userName: "",
+							flag: 0,
+							bar: row.bar
 						};
+						return obj;
+					});
 
-						this.video.current = this.video.list[0];
-						this.initVideo(this.videoPath + this.video.current.address, "video/mp4");
-
-						eos.getTableRows(true, EOS_CONFIG.contractName, this.video.current.owner, "user").then((data) => {
-
-							if (data.rows && data.rows.length) {
-								var user = data.rows[0];
-								console.log(user);
-								this.video.current.userId = user.id;
-								this.video.current.userName = user.name;
-							}
-
-						}).catch((e) => {
-							console.error(e);
-						});
+					if (inviteParam && inviteParam.inviter) {
+						this.video.list.unshift(inviteParam);
+						//this.video.list.splice(0, 0, inviteParam);
 					}
-				}).catch((e) => {
-					console.error(e);
-				})
-			}, 500);
 
+					if (this.video.list.length > 1) {
+						this.isHasNext = true;
+					};
+
+					this.video.current = this.video.list[0];
+					this.initVideo(this.videoPath + this.video.current.address, "video/mp4");
+
+					eos.getTableRows(true, EOS_CONFIG.contractName, this.video.current.owner, "user").then((data) => {
+
+						if (data.rows && data.rows.length) {
+							var user = data.rows[0];
+							console.log(user);
+
+							for (var i = this.video.list.length - 1; i >= 0; i--) {
+								this.video.list[i].userId = user.id;
+								this.video.list[i].userName = user.name;
+								this.video.list[i].flag = user.flag;
+							}
+						}
+
+					}).catch((e) => {
+						console.error(e);
+					});
+				}
+			}).catch((e) => {
+				console.error(e);
+			})
 		},
 
 		methods: {
@@ -477,34 +483,15 @@
 					vue.video.current.isUps = true;
 					vue.video.current.ups += 1;
 
-					const requiredFields = {
-						personal: ['firstname', 'email'],
-						location: ['country'],
-						accounts: [
-							{ blockchain: 'eos', host: '10.101.2.109', port: 8888 },
-							{ blockchain: 'eth', chainId: 1 }
-						]
-					};
-
-					// this.scatter.getIdentity().then(identity => {
-
-					// 	console.log(identity)
-
-
-					// 	//...
-					// }).catch(error => {
-					// 	//...
-					// });
+					vue.video.current.balance += 1;
 
 					eos.contract(EOS_CONFIG.contractName).then((contract) => {
 						contract.like(this.video.current.owner, "babel.joe", this.video.current.id, { authorization: ["babel.joe"] }).then((res) => {
 							console.log(res)
-							vue.video.current.balance += 1;
 						}).catch((err) => {
 							console.log(err)
 						})
 					})
-
 
 				}
 			},
@@ -512,9 +499,17 @@
 			openInviteLink: function () {
 
 				var opt = {
-					bar: this.video.current.owner,
-					inviter: this.video.current.userName,
+					id: this.video.current.id,
 					address: this.video.current.address,
+					description: this.video.current.description,
+					ups: this.video.current.ups,
+					owner: this.video.current.owner,
+					balance: this.video.current.balance,
+					isUps: false,
+					userId: this.video.current.userId,
+					userName: this.video.current.userName,
+					bar: this.video.current.bar,
+					inviter: EOS_CONFIG.contractSender
 				}
 
 				var request = qs.stringify(opt);
@@ -522,6 +517,24 @@
 				var url = `${location.origin}?${request}`;
 
 				console.log(url);
+
+				const input = document.createElement('input');
+				input.setAttribute('readonly', 'readonly');
+				input.setAttribute('value', url);
+				document.body.appendChild(input);
+				//input.setSelectionRange(0, 9999);
+				var selection = document.getSelection();
+				var range = document.createRange();
+				range.selectNode(input);
+				selection.removeAllRanges();
+  				selection.addRange(range);
+				if (document.execCommand('copy')) {
+					document.execCommand('copy');
+					console.log('copy success');
+				}
+				document.body.removeChild(input);
+
+				alert("url has been copied!");
 			},
 
 			// 弹出评论窗口

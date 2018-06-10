@@ -2,16 +2,18 @@
 	<div class="w750">
 		<header>
 			<div class="header-box">
-				<a href="javascript:window.history.back();" class="header-img tal"><img src="../assets/images/back.png" alt=""></a>
-				<p class="header-txt">酒吧</p>
+				<router-link :to="{name:'Index'}">
+					<a class="header-img tal"><img src="../assets/images/back.png" alt=""></a>
+				</router-link>
+				<p class="header-txt">club</p>
 				<a href="#" class="header-img tar"></a>
 			</div>
 		</header>
 		<div class="bar">
 			<div class="bar-msg">
 				<div class="bar-bg"><img src="../assets/img/index-img02.jpg" alt=""></div>
-				<a href="#" class="res-seat" v-if="isOrder" style="background: #ccc;">已订座</a>
-				<a href="#" class="res-seat" @click="order()" v-else>订座1.00&nbsp;DJB</a>
+				<a href="#" class="res-seat" v-if="isOrder" style="background: #ccc;">reserved</a>
+				<a href="#" class="res-seat" @click="order()" v-else>ticketing100.00&nbsp;DJB</a>
 				<div class="bar-img">
 					<span class="img"><img src="../assets/img/user-bg.jpg" alt=""></span>
 					<span class="name">{{userName}}</span>
@@ -20,32 +22,32 @@
 			<div class="bar-score clear">
 				<span class="item">
 					<em class="img"><img src="../assets/images/foot-img-like.png" alt=""></em>
-					<span class="txt">评分&nbsp;&nbsp;5.0</span>
+					<span class="txt">star&nbsp;&nbsp;5.0</span>
 				</span>
 				<span class="item">
 					<em class="img">$</em>
 					<span class="txt">&nbsp;&nbsp;{{balance + ' ' + symbol}}</span>
 				</span>
 			</div>
-			<div class="bar-int">jsdfgjsdghdjdgsdjgggh</div>
+			<div class="bar-int">Since it opened its doors in 2004, Volar has ruled over the Hong Kong nightlife circuit as the city’s coolest club</div>
 			<div class="bar-address">
-				<p class="tit">地址：</p>
-				<p class="txt address">不知道什么地方<img src="../assets/images/local.png" alt=""></p>
+				<p class="tit">add:</p>
+				<p class="txt address">Basement, 38-44 D'Aguilar Street, Lan Kwai Fong, Hong Kong<img src="../assets/images/local.png" alt=""></p>
 			</div>
 			<div class="bar-star">
-				<p class="tit">艺人：</p>
+				<p class="tit">artist：</p>
 				<div class="star-list clear">
 					<a href="#" class="item">
 						<span class="img"><img src="../assets/images/head-default.png" alt=""></span>
-						<span class="txt">明星名字</span>
+						<span class="txt">Avicii</span>
 					</a>
 					<a href="#" class="item">
 						<span class="img"><img src="../assets/images/head-default.png" alt=""></span>
-						<span class="txt">明星名字</span>
+						<span class="txt">Avicii</span>
 					</a>
 					<a href="#" class="item">
 						<span class="img"><img src="../assets/images/head-default.png" alt=""></span>
-						<span class="txt">明星名字</span>
+						<span class="txt">Avicii</span>
 					</a>
 				</div>
 			</div>
@@ -150,20 +152,31 @@ export default {
   	//订座
   	order: function(){
 
-  		if(window.confirm("您确认要订座，确认即会从您账号扣除1.00 DJB到酒吧？")){
+  		if(window.confirm("are u confirm，it will send 100 DJB token to club？")){
   			var bar_name = "babel.bar"
 			var user_name = "babel.joe"
-			var money = "1.0000 DJB"
-			var inviter = "babel.alice"
+			var money = "100.0000 DJB"
+			var inviter = localStorage.getItem("INVITE") || "";
+			console.log(inviter);
+
+			if(inviter){
+	    		this.balance += 80;
+	    		user_name = "babel.dj";
+	    	}else{
+	    		this.balance += 100;
+	    	}
+	        
+	        this.isOrder = true;
 
 			this.eosClient.contract(EOS_CONFIG.contractName).then((contract) => {
 			    contract.booking(bar_name, user_name, money, inviter, { authorization: [user_name] }).then((res) => {
-			        this.balance += 1;
-			        this.isOrder = true;
+			    	console.log(res);
 			    }).catch((err) => {
 			        console.log(err);
 			    })
 			})
+
+			localStorage.removeItem("INVITE");
   		}
   	}
   }

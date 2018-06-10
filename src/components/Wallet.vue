@@ -2,8 +2,10 @@
 	<div class="w750">
 		<header>
 			<div class="header-box">
-				<a href="javascript:window.history.back();" class="header-img tal"><img src="../assets/images/back.png" alt=""></a>
-				<p class="header-txt">钱包</p>
+				<router-link :to="{name:'User', params:{owner:owner}}">
+					<a class="header-img tal"><img src="../assets/images/back.png" alt=""></a>
+				</router-link>
+				<p class="header-txt">Wallet</p>
 				<a href="#" class="header-img tar"></a>
 			</div>
 		</header>
@@ -17,9 +19,9 @@
 				<div class="my-bal">
 					<div class="bal-num">
 						<span class="img"><img src="../assets/images/balance.png" alt=""></span>
-						<span class="txt"><em class="txt-em">{{balance.toFixed(2)}}</em></span>
+						<span class="txt"><em class="txt-em">{{balance + " DJB"}}</em></span>
 					</div>
-					<a href="#" class="recharge">充值</a>
+					<!-- <a href="#" class="recharge">充值</a> -->
 				</div>
 				<div class="bal-det">
 					<div class="record" v-for="item in logs">
@@ -39,15 +41,15 @@
 				<div class="cou-list clear">
 					<div class="img"><img src="../assets/images/coupon.png" alt=""></div>
 					<div class="txt">
-						<p class="place">店铺名称</p>
-						<p class="con">酒水8折</p>
+						<p class="place">volar</p>
+						<p class="con">80% discount</p>
 					</div>
 				</div>
 				<div class="cou-list clear">
 					<div class="img"><img src="../assets/images/coupon.png" alt=""></div>
 					<div class="txt">
-						<p class="place">店铺名称</p>
-						<p class="con">酒水8折</p>
+						<p class="place">volar</p>
+						<p class="con">80% discount</p>
 					</div>
 				</div>
 			</div>
@@ -77,6 +79,7 @@ export default {
       userId: "",
       userName: "",
       balance: 0,
+      owner: "",
       logs:[]
     }
   },
@@ -116,7 +119,12 @@ export default {
 
   mounted () {
 
-	this.eosClient.getTableRows(true, EOS_CONFIG.contractName, "babel.joe", "user").then((data) => {
+  	var owner = this.$route.params.owner;
+	if(!owner){
+		owner = EOS_CONFIG.contractSender;
+	}
+
+	this.eosClient.getTableRows(true, EOS_CONFIG.contractName, owner, "user").then((data) => {
 
 		if(data.rows && data.rows.length){
 			var user = data.rows[0];
@@ -124,6 +132,7 @@ export default {
 			this.userId = user.id;
 			this.userName = user.name;
 			this.balance = parseFloat(user.balance.split(" ")[0]);
+			this.owner = user.owner;
 
 			this.eosClient.getTableRows(true, EOS_CONFIG.contractName, user.owner, "log").then((data) => {
 			    this.logs = data.rows;

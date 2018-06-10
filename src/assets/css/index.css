@@ -31,15 +31,15 @@
 .index-top .top-head .add-friend {
   background: #ff2c55;
   display: block;
-  width: 0.46rem;
-  height: 0.46rem;
+  width: 0.35rem;
+  height: 0.35rem;
   border-radius: 50%;
   text-align: center;
   line-height: 0.4rem;
-  font-size: 0.44rem;
+  font-size: 0.2rem;
   position: absolute;
-  bottom: -0.23rem;
-  right: 0.27rem;
+  bottom: -0.1rem;
+  right: 0.1rem;
 }
 .index-top .top-tab {
   margin: 0 1.8rem;
