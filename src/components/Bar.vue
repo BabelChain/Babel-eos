@@ -65,15 +65,9 @@
 <script>
 
 import EOS from 'eosjs'
+import config from './config'
 
-const EOS_CONFIG = {
-	contractName: "babel", // Contract name
-	contractSender: "babel.joe", // User executing the contract (should be paired with private key)
-	clientConfig: {
-		keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // Your private key
-		httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
-	}
-}
+
 
 export default {
   name: 'Bar',
@@ -121,13 +115,13 @@ export default {
         
         })*/
 
-        this.eosClient = EOS(EOS_CONFIG.clientConfig);
+        this.eosClient = EOS(config.eosConfig);
   },
 
   mounted () {
 
   	//获取酒吧信息
-	this.eosClient.getTableRows(true, EOS_CONFIG.contractName, "babel.bar", "user").then((data) => {
+	this.eosClient.getTableRows(true, config.contractName, "babel.bar", "user").then((data) => {
 
 		if (data.rows && data.rows.length) {
 			var user = data.rows[0];
@@ -168,7 +162,7 @@ export default {
 	        
 	        this.isOrder = true;
 
-			this.eosClient.contract(EOS_CONFIG.contractName).then((contract) => {
+			this.eosClient.contract(config.contractName).then((contract) => {
 			    contract.booking(bar_name, user_name, money, inviter, { authorization: [user_name] }).then((res) => {
 			    	console.log(res);
 			    }).catch((err) => {

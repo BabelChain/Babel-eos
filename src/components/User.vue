@@ -16,7 +16,7 @@
 			<!-- 用户信息 -->
 			<div class="user-info">
 				<a href="#" class="user-img">
-					
+
 					<img v-if="flag != null" :src="portraits[flag]" alt="">
 					<!-- <img v-else src="../assets/img/user-bg.jpg" alt=""> -->
 				</a>
@@ -85,15 +85,8 @@
 	import portrait3 from "../assets/img/portrait3.jpg"
 
 	import EOS from 'eosjs'
-	
-	const EOS_CONFIG = {
-		contractName: "babel", // Contract name
-		contractSender: "babel.joe", // User executing the contract (should be paired with private key)
-		clientConfig: {
-			keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], 
-			httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
-		}
-	}
+
+	import config from './config'
 
 	export default {
 		name: 'User',
@@ -115,83 +108,83 @@
 		},
 
 		created() {
+
+			/*			const network = {
+							blockchain: 'eos',
+							host: '10.101.2.109', // ( or null if endorsed chainId )
+							port: 8888, // ( or null if defaulting to 80 )
+							chainId: 1 || 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f', // Or null to fetch automatically ( takes longer )
+						}
 			
-/*			const network = {
-				blockchain: 'eos',
-				host: '10.101.2.109', // ( or null if endorsed chainId )
-				port: 8888, // ( or null if defaulting to 80 )
-				chainId: 1 || 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f', // Or null to fetch automatically ( takes longer )
-			}
-
-			document.addEventListener('scatterLoaded', scatterExtension => {
-				// Scatter will now be available from the window scope.
-				// At this stage the connection to Scatter from the application is 
-				// already encrypted. 
-				const scatter = window.scatter;
-
-				// It is good practice to take this off the window once you have 
-				// a reference to it.
-				window.scatter = null;
-
-				// If you want to require a specific version of Scatter
-				scatter.requireVersion(3.0);
-				this.isScatter = true;
-				console.log("scatter installed")
-
-				// Set up any extra options you want to use eosjs with. 
-				const eosOptions = {};
-
-				// Get a reference to an 'Eosjs' instance with a Scatter signature provider.
-				eos = scatter.eos(network, EOS, eosOptions, 'http');
-
-			})*/
-			this.eosClient = EOS(EOS_CONFIG.clientConfig);
+						document.addEventListener('scatterLoaded', scatterExtension => {
+							// Scatter will now be available from the window scope.
+							// At this stage the connection to Scatter from the application is 
+							// already encrypted. 
+							const scatter = window.scatter;
+			
+							// It is good practice to take this off the window once you have 
+							// a reference to it.
+							window.scatter = null;
+			
+							// If you want to require a specific version of Scatter
+							scatter.requireVersion(3.0);
+							this.isScatter = true;
+							console.log("scatter installed")
+			
+							// Set up any extra options you want to use eosjs with. 
+							const eosOptions = {};
+			
+							// Get a reference to an 'Eosjs' instance with a Scatter signature provider.
+							eos = scatter.eos(network, EOS, eosOptions, 'http');
+			
+						})*/
+			this.eosClient = EOS(config.eosConfig);
 		},
 
 		mounted() {
 
 			var owner = this.$route.params.owner;
-			if(!owner){
-				owner = EOS_CONFIG.contractSender;
+			if (!owner) {
+				owner = config.contractSender;
 			}
 
-			this.eosClient.getTableRows(true, EOS_CONFIG.contractName, owner, "user").then((data) => {
+			this.eosClient.getTableRows(true, config.contractName, owner, "user").then((data) => {
 
-					if (data.rows && data.rows.length) {
-						var user = data.rows[0];
+				if (data.rows && data.rows.length) {
+					var user = data.rows[0];
 
-						console.log(user);
+					console.log(user);
 
-						this.owner = user.owner;
-						this.userName = user.name;
-						this.flag = user.flag;
-						this.desc = user.desc;
-						this.follow = user.follow;
-						this.fans = user.fans;
-						this.ups = user.ups;
+					this.owner = user.owner;
+					this.userName = user.name;
+					this.flag = user.flag;
+					this.desc = user.desc;
+					this.follow = user.follow;
+					this.fans = user.fans;
+					this.ups = user.ups;
 
-						this.eosClient.getTableRows(true, EOS_CONFIG.contractName, user.owner, "video").then((data) => {
-							if (data.rows && data.rows.length) {
+					this.eosClient.getTableRows(true, config.contractName, user.owner, "video").then((data) => {
+						if (data.rows && data.rows.length) {
 
-								this.videoList = data.rows;
-							}
-						}).catch((e) => {
-							console.error(e);
-						});
-					}
+							this.videoList = data.rows;
+						}
+					}).catch((e) => {
+						console.error(e);
+					});
+				}
 
 
 
-				}).catch((e) => {
-					console.error(e);
-				})
+			}).catch((e) => {
+				console.error(e);
+			})
 		},
 
 		methods: {
-			followUser: function(){
-				if(this.isFollow){
+			followUser: function () {
+				if (this.isFollow) {
 					this.isFollow = false;
-				}else{
+				} else {
 					this.isFollow = true;
 				}
 			}

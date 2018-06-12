@@ -174,18 +174,12 @@
 	import qs from 'qs'
 	var eos;
 
+	import config from './config'
+
 	import portrait1 from "../assets/img/portrait1.jpg"
 	import portrait2 from "../assets/img/portrait2.jpg"
 	import portrait3 from "../assets/img/portrait3.jpg"
 
-	const EOS_CONFIG = {
-		contractName: "babel", //Contract name
-		contractSender: "babel.joe", //User executing the contract (should be paired with private key)
-		clientConfig: {
-			keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // Your private key
-			httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
-		}
-	}
 
 	export default {
 		name: 'Index',
@@ -196,8 +190,8 @@
 				isHasNext: false,
 				isHasPrevious: false,
 				isShowComment: false,
-				videoPath: "http://10.101.2.109:8080/ipfs/",
-				imagePath: "http://10.101.2.109:8080/ipfs/",
+				videoPath: config.ipfsEndpoint,
+				imagePath: config.ipfsEndpoint,
 				video: {
 					currentIndex: 0,
 					current: {
@@ -223,12 +217,12 @@
 
 		created() {
 
-			const network = {
-				blockchain: 'eos',
-				host: '10.101.2.109', // ( or null if endorsed chainId )
-				port: 8888, // ( or null if defaulting to 80 )
-				chainId: 1 || 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f', // Or null 
-			}
+			// const network = {
+			// 	blockchain: 'eos',
+			// 	host: '10.101.2.109', // ( or null if endorsed chainId )
+			// 	port: 8888, // ( or null if defaulting to 80 )
+			// 	chainId: 1 || 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f', // Or null 
+			// }
 
 			var _this = this;
 
@@ -265,7 +259,7 @@
 			eos = EOS(
 				{
 					keyProvider: ['5KVuf8b8pePBsjTfYn3X3L3DayK6dftQiV9jfxGbNseiYfBcBYR'], // 直接提供私钥。后续应该用scatter方案来替换。
-					httpEndpoint: 'http://10.101.2.109:8888' // EOS http endpoint
+					httpEndpoint: 'http://192.168.1.104:8888' // EOS http endpoint
 				}
 			)
 		},
@@ -280,7 +274,7 @@
 			} 
 
 			//获取视频列表
-			eos.getTableRows(true, EOS_CONFIG.contractName, "babel.dj", "video").then((data) => {
+			eos.getTableRows(true, config.contractName, "babel.dj", "video").then((data) => {
 				console.log(data);
 				if (data.rows && data.rows.length) {
 
@@ -315,7 +309,7 @@
 					this.video.current = this.video.list[0];
 					this.initVideo(this.videoPath + this.video.current.address, "video/mp4");
 
-					eos.getTableRows(true, EOS_CONFIG.contractName, this.video.current.owner, "user").then((data) => {
+					eos.getTableRows(true, config.contractName, this.video.current.owner, "user").then((data) => {
 
 						if (data.rows && data.rows.length) {
 							var user = data.rows[0];
@@ -485,7 +479,7 @@
 
 					vue.video.current.balance += 1;
 
-					eos.contract(EOS_CONFIG.contractName).then((contract) => {
+					eos.contract(config.contractName).then((contract) => {
 						contract.like(this.video.current.owner, "babel.joe", this.video.current.id, { authorization: ["babel.joe"] }).then((res) => {
 							console.log(res)
 						}).catch((err) => {
@@ -509,7 +503,7 @@
 					userId: this.video.current.userId,
 					userName: this.video.current.userName,
 					bar: this.video.current.bar,
-					inviter: EOS_CONFIG.contractSender
+					inviter: config.contractSender
 				}
 
 				var request = qs.stringify(opt);

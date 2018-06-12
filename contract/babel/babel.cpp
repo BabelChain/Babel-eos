@@ -90,6 +90,17 @@ class babel : public eosio::contract
         // author ++ up
         author_table.modify(a_itr, 0, [&](auto &acnt) {
             acnt.ups++;
+            acnt.balance += asset(10000, S(4, DJB));
+        });
+
+        log_index  author_logs(_self, author);
+
+        author_logs.emplace(_self, [&](auto &new_log) {
+            new_log.id = author_logs.available_primary_key();
+            new_log.owner = author;
+            new_log.type = 1;
+            new_log.description = "Post";
+            new_log.quantity = asset(10000, S(4, DJB));
         });
 
         // voter balance +

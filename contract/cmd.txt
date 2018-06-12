@@ -15,6 +15,7 @@ cleos create account eosio babel.bar EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpC
 cleos create account eosio babel.dj EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 cleos create account eosio babel.dj2 EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 cleos create account eosio babel.joe EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.sky EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
 
 //create token
 cleos create account eosio eosio.token EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
@@ -27,6 +28,8 @@ cleos push action eosio.token issue '[ "babel.user1", "100.0000 DJB", "memo" ]' 
 // signup
 cleos push action babel signup '["babel.user", 0, "Alice","Alice.png","Hi,I am Alice. ","babel.bar"]' -p babel.user
 cleos push action babel signup '["babel.joe",0, "joe","joe.png","Hi,I am Joe.","babel.bar"]' -p babel.joe
+cleos push action babel signup '["babel.sky",0, "sky","sky.png","Hi,I am sky.","babel.bar"]' -p babel.joe
+
 cleos push action babel signup '["babel.bar", 1, "vouge club","jc1991.png", "very cool bar",""]' -p babel.user
 cleos push action babel signup '["babel.dj", 2, "dj one","jc1991.png","Hi,I am a DJ.","babel.bar"]' -p babel.user
 cleos push action babel signup '["babel.dj2", 3, "dj two","jc1991.png", "Hi,I am DJ too.", "babel.bar"]' -p babel.user
@@ -92,3 +95,14 @@ http://10.101.2.109:8080/ipfs/QmXyg9mttQdx1tpWodCcPeeReLxDEg8eb5R98UfkskT7ZK
 
 360 Disco Spaceship virtual reality video.mp4
 http://10.101.2.109:8080/ipfs/QmVEQLniy9giYndmwEYPTNPzz4bHZvcUAJy9WkUQ3WJMJ3
+
+
+
+
+cleos create account eosio babel EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.user EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.bar EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.dj EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.dj2 EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.joe EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
+cleos create account eosio babel.sky EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q EOS6Fhx9xMx5eNoTQjVSvNVMarT5QpPj9kddJmNbzpCbXMvtbgL9q
